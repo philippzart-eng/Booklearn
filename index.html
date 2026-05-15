@@ -8,417 +8,374 @@
 <meta name="apple-mobile-web-app-title" content="LearnBook">
 <meta name="theme-color" content="#0f172a">
 <title>LearnBook</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f172a;
-  --bg2: #1e293b;
-  --bg3: #334155;
-  --accent: #6ee7b7;
-  --accent2: #34d399;
-  --text: #f1f5f9;
-  --text2: #94a3b8;
-  --text3: #64748b;
-  --border: rgba(255,255,255,0.08);
-  --border2: rgba(255,255,255,0.15);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-top: env(safe-area-inset-top, 0px);
+  --bg: #0f172a; --bg2: #1e293b; --bg3: #334155;
+  --accent: #6ee7b7; --accent2: #34d399;
+  --text: #f1f5f9; --text2: #94a3b8; --text3: #64748b;
+  --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.15);
+  --red: #f87171; --amber: #fbbf24; --blue: #60a5fa;
+  --r: 14px; --rsm: 10px;
+  --sb: env(safe-area-inset-bottom,0px); --st: env(safe-area-inset-top,0px);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overscroll-behavior: none; }
-
-body { display: flex; flex-direction: column; }
-
-#screen { flex: 1; overflow-y: auto; padding: calc(var(--safe-top) + 16px) 16px 0; padding-bottom: calc(80px + var(--safe-bottom)); }
-
-/* Header */
-.app-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.app-logo { font-family: 'Lora', serif; font-size: 22px; color: var(--accent); letter-spacing: -0.5px; }
-.app-logo span { color: var(--text2); font-weight: 400; }
-
-/* Bottom nav */
-#bottomNav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15,23,42,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); padding: 10px 0 calc(10px + var(--safe-bottom)); display: flex; }
-.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; color: var(--text3); font-size: 10px; font-family: 'DM Sans', sans-serif; cursor: pointer; padding: 4px 0; transition: color 0.2s; }
-.nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.nav-btn.active { color: var(--accent); }
-
-/* Cards */
-.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
-.card-sm { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
-
-/* Upload zone */
-.upload-zone { border: 1.5px dashed var(--border2); border-radius: var(--radius); padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: transparent; width: 100%; }
-.upload-zone:active { background: var(--bg2); }
-.upload-zone svg { width: 40px; height: 40px; stroke: var(--accent); margin-bottom: 12px; stroke-width: 1.5; }
-.upload-zone h3 { font-family: 'Lora', serif; font-size: 18px; color: var(--text); margin-bottom: 6px; }
-.upload-zone p { font-size: 13px; color: var(--text2); line-height: 1.5; }
-#fileInput { display: none; }
-
-/* Book info */
-.book-card { display: flex; gap: 14px; align-items: flex-start; }
-.book-spine { width: 48px; height: 64px; background: linear-gradient(135deg, var(--accent) 0%, #059669 100%); border-radius: 4px 8px 8px 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; box-shadow: 4px 4px 16px rgba(110,231,183,0.2); }
-.book-spine svg { width: 24px; height: 24px; stroke: #0f172a; stroke-width: 2; }
-.book-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-.book-author { font-size: 12px; color: var(--text2); }
-.book-badge { display: inline-block; margin-top: 8px; font-size: 11px; background: rgba(110,231,183,0.15); color: var(--accent); padding: 3px 10px; border-radius: 99px; border: 1px solid rgba(110,231,183,0.3); }
-
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overscroll-behavior:none}
+body{display:flex;flex-direction:column}
+#screen{flex:1;overflow-y:auto;padding:calc(var(--st) + 14px) 15px 0;padding-bottom:calc(76px + var(--sb))}
+.app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.logo{font-family:'Lora',serif;font-size:21px;color:var(--accent)}
+.logo span{color:var(--text3);font-weight:400}
+.hdr-btn{background:none;border:none;color:var(--text3);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:4px 8px}
+#bottomNav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 calc(8px + var(--sb));display:flex}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--text3);font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:4px 0;transition:color .2s}
+.nav-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active{color:var(--accent)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:15px;margin-bottom:11px}
+.card-sm{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:11px 13px}
+.sec-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:9px;font-weight:500}
+/* Upload */
+.upload-btn{border:1.5px dashed var(--border2);border-radius:var(--r);padding:28px 16px;text-align:center;cursor:pointer;width:100%;background:transparent;transition:background .2s;display:block}
+.upload-btn:active{background:var(--bg2)}
+.upload-btn svg{width:36px;height:36px;stroke:var(--accent);margin-bottom:10px;stroke-width:1.5}
+.upload-btn h3{font-family:'Lora',serif;font-size:17px;color:var(--text);margin-bottom:5px}
+.upload-btn p{font-size:13px;color:var(--text2)}
+/* Book cards */
+.book-row{display:flex;align-items:center;gap:12px;padding:12px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.book-row:active{background:var(--bg3)}
+.book-row.active-book{border-color:var(--accent)}
+.book-spine{width:40px;height:52px;border-radius:3px 7px 7px 3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.book-spine svg{width:20px;height:20px;stroke:#0f172a;stroke-width:2;fill:none}
+.book-row-info{flex:1;min-width:0}
+.book-row-title{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.book-row-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.book-row-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px;font-size:16px;flex-shrink:0}
 /* Chapter list */
-.section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 10px; font-weight: 500; }
-.chapter-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
-.chapter-item:active { background: var(--bg3); }
-.chapter-item.selected { border-color: var(--accent); background: rgba(110,231,183,0.08); }
-.chap-num { font-size: 12px; color: var(--text3); min-width: 22px; font-weight: 500; }
-.chap-title { flex: 1; font-size: 14px; color: var(--text); line-height: 1.3; }
-.chap-words { font-size: 11px; color: var(--text3); white-space: nowrap; }
-.chapter-item.selected .chap-title { color: var(--accent); }
-.chapter-item.selected .chap-num { color: var(--accent); }
-
-/* Tool tabs */
-.tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
-.tool-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; transition: all 0.15s; text-align: left; }
-.tool-card:active { transform: scale(0.97); }
-.tool-card.selected { border-color: var(--accent); background: rgba(110,231,183,0.08); }
-.tool-card svg { width: 22px; height: 22px; stroke: var(--text3); margin-bottom: 8px; stroke-width: 1.5; display: block; }
-.tool-card.selected svg { stroke: var(--accent); }
-.tool-card-name { font-size: 13px; font-weight: 500; color: var(--text); }
-.tool-card.selected .tool-card-name { color: var(--accent); }
-.tool-card-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-/* Generate button */
-.gen-btn { width: 100%; padding: 16px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif; background: var(--accent); color: #0f172a; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; letter-spacing: 0.2px; }
-.gen-btn:active { transform: scale(0.98); background: var(--accent2); }
-.gen-btn:disabled { opacity: 0.4; }
-
+.chap-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;cursor:pointer;transition:all .15s;position:relative}
+.chap-item:active{background:var(--bg3)}
+.chap-item.selected{border-color:var(--accent);background:rgba(110,231,183,.07)}
+.chap-num{font-size:11px;color:var(--text3);min-width:20px;font-weight:500}
+.chap-title{flex:1;font-size:13px;line-height:1.35}
+.chap-item.selected .chap-title,.chap-item.selected .chap-num{color:var(--accent)}
+.chap-saved{font-size:10px;color:var(--accent2);background:rgba(110,231,183,.12);border-radius:99px;padding:2px 7px;white-space:nowrap}
+/* Tools */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tool-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:12px;cursor:pointer;transition:all .15s;text-align:left;position:relative}
+.tool-card:active{transform:scale(.97)}
+.tool-card.sel{border-color:var(--accent);background:rgba(110,231,183,.07)}
+.tool-card svg{width:20px;height:20px;stroke:var(--text3);margin-bottom:7px;stroke-width:1.5;display:block}
+.tool-card.sel svg{stroke:var(--accent)}
+.tool-name{font-size:13px;font-weight:500;color:var(--text)}
+.tool-card.sel .tool-name{color:var(--accent)}
+.tool-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.tool-saved-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent2)}
+/* Buttons */
+.gen-btn{width:100%;padding:14px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;background:var(--accent);color:#0f172a;border:none;border-radius:var(--rsm);cursor:pointer;transition:all .15s}
+.gen-btn:active{transform:scale(.98);background:var(--accent2)}
+.gen-btn:disabled{opacity:.4}
+.btn-row{display:flex;gap:8px;margin-top:10px}
+.btn-sec{flex:1;padding:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:transparent;border:1px solid var(--border2);color:var(--text2);border-radius:var(--rsm);cursor:pointer}
+.btn-sec:active{background:var(--bg3)}
+.btn-acc{flex:1;padding:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:rgba(110,231,183,.15);border:1px solid rgba(110,231,183,.3);color:var(--accent);border-radius:var(--rsm);cursor:pointer}
+.btn-acc:active{background:rgba(110,231,183,.25)}
 /* Output */
-.output-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-.output-header svg { width: 20px; height: 20px; stroke: var(--accent); stroke-width: 1.5; flex-shrink: 0; }
-.output-title { font-family: 'Lora', serif; font-size: 16px; color: var(--text); }
-
-.prose { font-size: 14px; line-height: 1.8; color: var(--text2); white-space: pre-wrap; }
-.prose strong, .prose b { color: var(--text); font-weight: 500; }
-
+.out-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border)}
+.out-title{display:flex;align-items:center;gap:8px;font-family:'Lora',serif;font-size:15px}
+.out-title svg{width:18px;height:18px;stroke:var(--accent);stroke-width:1.5;flex-shrink:0}
+.save-indicator{font-size:11px;color:var(--accent2);background:rgba(110,231,183,.12);border-radius:99px;padding:3px 9px}
+.prose{font-size:14px;line-height:1.8;color:var(--text2);white-space:pre-wrap}
 /* Flashcards */
-.flashcard { background: var(--bg3); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 10px; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s; }
-.flashcard:active { transform: scale(0.98); }
-.flashcard .front { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-.flashcard .tap-hint { font-size: 11px; color: var(--text3); }
-.flashcard .back { font-size: 13px; color: var(--accent); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
-.flashcard.flipped { border-color: var(--accent); background: rgba(110,231,183,0.06); }
-.flashcard.flipped .back { display: block; }
-.flashcard.flipped .tap-hint { display: none; }
-
+.fc{background:var(--bg3);border-radius:var(--rsm);padding:14px;margin-bottom:9px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
+.fc:active{transform:scale(.98)}
+.fc .front{font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px}
+.fc .hint{font-size:11px;color:var(--text3)}
+.fc .back{font-size:13px;color:var(--accent);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none;line-height:1.6}
+.fc.flip{border-color:var(--accent);background:rgba(110,231,183,.06)}
+.fc.flip .back{display:block}
+.fc.flip .hint{display:none}
 /* Quiz */
-.quiz-q-text { font-family: 'Lora', serif; font-size: 15px; color: var(--text); margin-bottom: 12px; line-height: 1.5; }
-.quiz-opt { width: 100%; text-align: left; padding: 12px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--text); cursor: pointer; transition: all 0.15s; }
-.quiz-opt:active:not(:disabled) { transform: scale(0.98); }
-.quiz-opt.correct { background: rgba(52,211,153,0.15); border-color: var(--accent); color: var(--accent); }
-.quiz-opt.wrong { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.5); color: #fca5a5; }
-.quiz-progress { font-size: 12px; color: var(--text3); margin-bottom: 16px; }
-.quiz-nav { display: flex; gap: 10px; margin-top: 16px; }
-.quiz-nav button { flex: 1; padding: 12px; border: 1px solid var(--border2); background: transparent; color: var(--text); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; }
-.quiz-nav button:active { background: var(--bg3); }
-
+.quiz-prog{font-size:12px;color:var(--text3);margin-bottom:13px}
+.quiz-q{font-family:'Lora',serif;font-size:15px;line-height:1.5;margin-bottom:12px}
+.quiz-opt{width:100%;text-align:left;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);cursor:pointer;transition:all .15s}
+.quiz-opt:active:not(:disabled){transform:scale(.98)}
+.quiz-opt.correct{background:rgba(52,211,153,.15);border-color:var(--accent);color:var(--accent)}
+.quiz-opt.wrong{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.5);color:#fca5a5}
+.quiz-nav{display:flex;gap:8px;margin-top:14px}
+.quiz-nav button{flex:1;padding:11px;border:1px solid var(--border2);background:transparent;color:var(--text);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
+.quiz-nav button:active{background:var(--bg3)}
 /* Terms */
-.term-item { padding: 12px 14px; background: var(--bg3); border-radius: var(--radius-sm); margin-bottom: 8px; border-left: 3px solid var(--accent); }
-.term-name { font-size: 14px; font-weight: 500; color: var(--accent); margin-bottom: 4px; }
-.term-def { font-size: 13px; color: var(--text2); line-height: 1.5; }
-
+.term{padding:11px 13px;background:var(--bg3);border-radius:var(--rsm);margin-bottom:7px;border-left:3px solid var(--accent)}
+.term-name{font-size:14px;font-weight:500;color:var(--accent);margin-bottom:3px}
+.term-def{font-size:13px;color:var(--text2);line-height:1.5}
+/* Saved view */
+.saved-book-section{margin-bottom:20px}
+.saved-book-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.saved-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;overflow:hidden}
+.saved-entry-hdr{display:flex;align-items:center;gap:10px;padding:11px 13px;cursor:pointer}
+.saved-entry-hdr:active{background:var(--bg3)}
+.saved-type-badge{font-size:10px;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.badge-summary{background:rgba(96,165,250,.15);color:#93c5fd}
+.badge-flashcards{background:rgba(251,191,36,.1);color:#fcd34d}
+.badge-quiz{background:rgba(167,139,250,.15);color:#c4b5fd}
+.badge-terms{background:rgba(110,231,183,.1);color:var(--accent)}
+.badge-questions{background:rgba(248,113,113,.1);color:#fca5a5}
+.saved-entry-title{flex:1;font-size:13px;color:var(--text);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.saved-entry-body{padding:0 13px 13px;border-top:1px solid var(--border);display:none}
+.saved-entry-body.open{display:block;padding-top:12px}
+.saved-del{background:none;border:none;color:var(--text3);font-size:15px;cursor:pointer;padding:4px}
 /* Settings */
-.setting-row { padding: 14px 0; border-bottom: 1px solid var(--border); }
-.setting-row:last-child { border-bottom: none; }
-.setting-label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-.setting-row input { width: 100%; padding: 10px 12px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-size: 14px; font-family: 'DM Sans', sans-serif; }
-.setting-row input::placeholder { color: var(--text3); }
-.save-btn { margin-top: 10px; padding: 10px 20px; background: var(--accent); color: #0f172a; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; border-radius: 99px; }
-.key-status { font-size: 12px; margin-top: 6px; }
-.key-status.ok { color: var(--accent); }
-.key-status.err { color: #fca5a5; }
-
-/* Loading */
-.loading-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 0; gap: 16px; }
-.loading-dots { display: flex; gap: 8px; }
-.loading-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1.2s ease-in-out infinite; }
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes pulse { 0%,80%,100%{transform:scale(0.5);opacity:0.3} 40%{transform:scale(1);opacity:1} }
-.loading-text { font-size: 13px; color: var(--text3); }
-
-/* Error */
-.error-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-sm); padding: 14px; font-size: 13px; color: #fca5a5; line-height: 1.5; }
-
-/* Empty state */
-.empty-state { text-align: center; padding: 60px 20px; }
-.empty-state svg { width: 48px; height: 48px; stroke: var(--text3); margin-bottom: 16px; stroke-width: 1; }
-.empty-state h3 { font-family: 'Lora', serif; font-size: 18px; color: var(--text2); margin-bottom: 8px; }
-.empty-state p { font-size: 13px; color: var(--text3); line-height: 1.6; }
-
-/* Install banner */
-.install-banner { background: rgba(110,231,183,0.08); border: 1px solid rgba(110,231,183,0.2); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 16px; font-size: 12px; color: var(--text2); line-height: 1.5; display: flex; gap: 10px; align-items: flex-start; }
-.install-banner svg { width: 18px; height: 18px; stroke: var(--accent); flex-shrink: 0; margin-top: 1px; }
-
-.mb-16 { margin-bottom: 16px; }
-.mb-8 { margin-bottom: 8px; }
+.setting-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:7px}
+.setting-input{width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rsm);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif}
+.setting-input::placeholder{color:var(--text3)}
+.key-status{font-size:12px;margin-top:5px}
+.key-ok{color:var(--accent)} .key-err{color:var(--red)}
+/* Loading / error */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 0;gap:14px}
+.dots{display:flex;gap:7px}
+.dots span{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pu 1.2s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes pu{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
+.loading-txt{font-size:13px;color:var(--text3)}
+.err-box{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:var(--rsm);padding:13px;font-size:13px;color:#fca5a5;line-height:1.5}
+.empty-state{text-align:center;padding:50px 20px}
+.empty-state svg{width:44px;height:44px;stroke:var(--text3);margin-bottom:14px;stroke-width:1}
+.empty-state h3{font-family:'Lora',serif;font-size:17px;color:var(--text2);margin-bottom:7px}
+.empty-state p{font-size:13px;color:var(--text3);line-height:1.6}
+.install-tip{background:rgba(110,231,183,.07);border:1px solid rgba(110,231,183,.18);border-radius:var(--rsm);padding:11px 13px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.5;display:flex;gap:9px;align-items:flex-start}
+.install-tip svg{width:16px;height:16px;stroke:var(--accent);flex-shrink:0;margin-top:1px}
 </style>
 </head>
 <body>
-
-<div id="screen">
-  <div class="app-header">
-    <div class="app-logo">Learn<span>Book</span></div>
-    <div style="font-size:12px; color:var(--text3)" id="headerStatus"></div>
-  </div>
-  <div id="view-library"></div>
-</div>
-
+<div id="screen"></div>
 <nav id="bottomNav">
-  <button class="nav-btn active" onclick="showView('library')" id="nav-library">
-    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    Bibliothek
+  <button class="nav-btn active" onclick="nav('library')" id="nb-library">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Bücher
   </button>
-  <button class="nav-btn" onclick="showView('learn')" id="nav-learn">
-    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    Lernen
+  <button class="nav-btn" onclick="nav('learn')" id="nb-learn">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Lernen
   </button>
-  <button class="nav-btn" onclick="showView('settings')" id="nav-settings">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    Einstellungen
+  <button class="nav-btn" onclick="nav('saved')" id="nb-saved">
+    <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Gespeichert
+  </button>
+  <button class="nav-btn" onclick="nav('settings')" id="nb-settings">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Einstellungen
   </button>
 </nav>
-
+<input type="file" id="fileInput" accept=".epub,application/epub+zip" multiple onchange="loadEpubs(event)" style="display:none">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-let chapters = [];
-let selectedChapterIdx = null;
+// ─── State ────────────────────────────────────────────
+let books = [];          // [{id, title, author, color, chapters:[{title,text,words}]}]
+let activeBookId = null;
+let activeChapIdx = null;
 let currentTool = 'summary';
-let quizData = [];
-let quizIdx = 0;
 let currentView = 'library';
-let bookMeta = { title: '', author: '' };
+let quizData = [], quizIdx = 0;
+// saved: {bookId_chapIdx_tool: {type, content_json_or_text, savedAt}}
+let saved = {};
 
-// ── Views ──────────────────────────────────────────────
-function showView(view) {
+const COLORS = [
+  ['#6ee7b7','#059669'],['#60a5fa','#1d4ed8'],['#f472b6','#be185d'],
+  ['#fbbf24','#b45309'],['#a78bfa','#6d28d9'],['#f87171','#b91c1c'],
+];
+let colorIdx = 0;
+
+function S(k,v){if(v===undefined){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}else{localStorage.setItem(k,JSON.stringify(v))}}
+
+function loadState(){
+  books = S('lb_books') || [];
+  activeBookId = S('lb_activeBook') || null;
+  saved = S('lb_saved') || {};
+  colorIdx = S('lb_colorIdx') || 0;
+  if(activeBookId && !books.find(b=>b.id===activeBookId)) activeBookId = books[0]?.id || null;
+}
+function saveState(){
+  // Save books without chapter text (too large) separately
+  const booksLight = books.map(b=>({...b, chapters: b.chapters.map(c=>({title:c.title,words:c.words}))}));
+  S('lb_books_meta', booksLight);
+  S('lb_activeBook', activeBookId);
+  S('lb_saved', saved);
+  S('lb_colorIdx', colorIdx);
+  // Store chapter texts per book
+  books.forEach(b => { try { S('lb_text_'+b.id, b.chapters.map(c=>c.text)); } catch(e){} });
+}
+function loadFullBooks(){
+  const meta = S('lb_books_meta') || [];
+  books = meta.map(b => {
+    const texts = S('lb_text_'+b.id) || [];
+    return {...b, chapters: b.chapters.map((c,i)=>({...c, text: texts[i]||''}))};
+  });
+}
+
+// ─── Nav ──────────────────────────────────────────────
+function nav(view){
   currentView = view;
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('nav-' + view).classList.add('active');
-  const screen = document.getElementById('screen');
-
-  if (view === 'library') renderLibrary();
-  else if (view === 'learn') renderLearn();
-  else if (view === 'settings') renderSettings();
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nb-'+view).classList.add('active');
+  render();
+}
+function render(){
+  if(currentView==='library') renderLibrary();
+  else if(currentView==='learn') renderLearn();
+  else if(currentView==='saved') renderSaved();
+  else renderSettings();
 }
 
-// ── Library ────────────────────────────────────────────
-function renderLibrary() {
+// ─── Library ──────────────────────────────────────────
+function renderLibrary(){
   const s = document.getElementById('screen');
-  if (chapters.length === 0) {
-    s.innerHTML = `
-      <div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div>
-      ${isIOS() ? `<div class="install-banner"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12h8M12 8v8" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg><div>Tipp: Tippe auf <strong>Teilen</strong> → <strong>Zum Home-Bildschirm</strong> um die App wie eine native App zu installieren.</div></div>` : ''}
-      <button class="upload-zone" onclick="document.getElementById('fileInput').click()">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 11v6M9 14l3-3 3 3"/></svg>
-        <h3>ePub laden</h3>
-        <p>Tippe hier um eine ePub-Datei aus der Dateien-App zu öffnen</p>
-      </button>
-      <input type="file" id="fileInput" accept=".epub,application/epub+zip" onchange="loadEpub(event)">
-      <div style="margin-top:24px; text-align:center; font-size:12px; color:var(--text3)">Kostenlose ePubs: gutenberg.org</div>`;
-  } else {
-    let chapHtml = chapters.map((ch, i) => `
-      <div class="chapter-item ${selectedChapterIdx === i ? 'selected' : ''}" onclick="selectChapter(${i})">
-        <span class="chap-num">${i+1}</span>
-        <span class="chap-title">${escHtml(ch.title)}</span>
-        <span class="chap-words">${ch.words} W.</span>
-      </div>`).join('');
+  const activeBook = books.find(b=>b.id===activeBookId);
 
-    s.innerHTML = `
-      <div class="app-header"><div class="app-logo">Learn<span>Book</span></div><button onclick="resetBook()" style="background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;">Buch wechseln</button></div>
-      <div class="card book-card mb-16">
-        <div class="book-spine"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-        <div><div class="book-title">${escHtml(bookMeta.title)}</div><div class="book-author">${escHtml(bookMeta.author)}</div><span class="book-badge">${chapters.length} Kapitel</span></div>
+  let booksHtml = books.map(b=>{
+    const [c1,c2] = b.color;
+    const active = b.id===activeBookId;
+    const savedCount = Object.keys(saved).filter(k=>k.startsWith(b.id+'_')).length;
+    return `<div class="book-row ${active?'active-book':''}" onclick="selectBook('${b.id}')">
+      <div class="book-spine" style="background:linear-gradient(135deg,${c1},${c2})">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       </div>
-      <div class="section-title">Kapitel wählen</div>
-      ${chapHtml}`;
-  }
-}
-
-function selectChapter(idx) {
-  selectedChapterIdx = idx;
-  renderLibrary();
-  setTimeout(() => showView('learn'), 120);
-}
-
-function resetBook() {
-  chapters = [];
-  selectedChapterIdx = null;
-  bookMeta = { title: '', author: '' };
-  renderLibrary();
-}
-
-// ── Learn ──────────────────────────────────────────────
-function renderLearn() {
-  const s = document.getElementById('screen');
-  if (chapters.length === 0) {
-    s.innerHTML = `<div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div>
-      <div class="empty-state">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        <h3>Noch kein Buch geladen</h3>
-        <p>Gehe zur Bibliothek und lade eine ePub-Datei.</p>
-      </div>`;
-    return;
-  }
-  if (selectedChapterIdx === null) {
-    s.innerHTML = `<div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div>
-      <div class="empty-state">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <h3>Kein Kapitel gewählt</h3>
-        <p>Wähle in der Bibliothek ein Kapitel aus.</p>
-      </div>`;
-    return;
-  }
-
-  const ch = chapters[selectedChapterIdx];
-  const tools = [
-    { id:'summary', label:'Zusammenfassung', desc:'Kernaussagen & Überblick', icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>' },
-    { id:'flashcards', label:'Karteikarten', desc:'Umklappbar, interaktiv', icon:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>' },
-    { id:'quiz', label:'Quiz', desc:'Multiple Choice', icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
-    { id:'terms', label:'Kernbegriffe', desc:'Wichtige Konzepte', icon:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>' },
-    { id:'questions', label:'Reflexionsfragen', desc:'Zum Nachdenken', icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
-  ];
-
-  const toolGrid = tools.map(t => `
-    <button class="tool-card ${currentTool === t.id ? 'selected' : ''}" onclick="selectTool('${t.id}')">
-      <svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round;">${t.icon}</svg>
-      <div class="tool-card-name">${t.label}</div>
-      <div class="tool-card-desc">${t.desc}</div>
-    </button>`).join('');
-
-  s.innerHTML = `
-    <div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div>
-    <div class="card-sm mb-16" style="border-left:3px solid var(--accent); padding-left:12px;">
-      <div style="font-size:11px; color:var(--text3); margin-bottom:3px;">Kapitel ${selectedChapterIdx+1}</div>
-      <div style="font-size:14px; font-weight:500; color:var(--text);">${escHtml(ch.title)}</div>
-    </div>
-    <div class="section-title mb-8">Lernmodus</div>
-    <div class="tool-grid">${toolGrid}</div>
-    <button class="gen-btn" id="genBtn" onclick="generate()">✦ Generieren</button>
-    <div id="outputArea" style="margin-top:16px;"></div>`;
-}
-
-function selectTool(id) {
-  currentTool = id;
-  document.getElementById('outputArea').innerHTML = '';
-  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-}
-
-// ── Settings ───────────────────────────────────────────
-function renderSettings() {
-  const saved = localStorage.getItem('lb_apikey') || '';
-  const s = document.getElementById('screen');
-  s.innerHTML = `
-    <div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div>
-    <div class="card">
-      <div class="setting-row">
-        <div class="setting-label">Anthropic API-Key</div>
-        <input type="password" id="apiKeyInput" placeholder="sk-ant-..." value="${escHtml(saved)}">
-        <div style="margin-top:6px; font-size:12px; color:var(--text3)">Wird nur lokal auf deinem Gerät gespeichert. <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">Key erstellen →</a></div>
-        <div class="key-status ${saved ? 'ok' : ''}" id="keyStatus">${saved ? '✓ Key gespeichert' : ''}</div>
-        <button class="save-btn" onclick="saveKey()">Speichern</button>
+      <div class="book-row-info">
+        <div class="book-row-title">${esc(b.title)}</div>
+        <div class="book-row-meta">${esc(b.author||'Unbekannt')} · ${b.chapters.length} Kapitel${savedCount?' · '+savedCount+' gespeichert':''}</div>
       </div>
-      <div class="setting-row">
-        <div class="setting-label">Über die App</div>
-        <div style="font-size:13px; color:var(--text2); line-height:1.6;">LearnBook verarbeitet ePub-Dateien direkt im Browser. Der Text wird an die Anthropic API gesendet — es werden keine Daten gespeichert.</div>
-      </div>
-      ${isIOS() ? `<div class="setting-row">
-        <div class="setting-label">Als App installieren</div>
-        <div style="font-size:13px; color:var(--text2); line-height:1.6;">Tippe in Safari auf das <strong style="color:var(--text)">Teilen-Symbol</strong> unten in der Leiste, dann auf <strong style="color:var(--text)">„Zum Home-Bildschirm"</strong>. So öffnet sich LearnBook wie eine native App.</div>
-      </div>` : ''}
+      <button class="book-row-del" onclick="deleteBook(event,'${b.id}')" title="Buch entfernen">✕</button>
     </div>`;
-}
+  }).join('');
 
-function saveKey() {
-  const val = document.getElementById('apiKeyInput').value.trim();
-  if (!val.startsWith('sk-ant-')) {
-    document.getElementById('keyStatus').textContent = '✗ Ungültiger Key (muss mit sk-ant- beginnen)';
-    document.getElementById('keyStatus').className = 'key-status err';
-    return;
+  let chapHtml = '';
+  if(activeBook){
+    chapHtml = `<div class="sec-title">Kapitel — ${esc(activeBook.title)}</div>` +
+      activeBook.chapters.map((c,i)=>{
+        const hasSaved = Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+i+'_'));
+        return `<div class="chap-item ${activeChapIdx===i&&activeBookId===activeBook.id?'selected':''}" onclick="selectChap(${i})">
+          <span class="chap-num">${i+1}</span>
+          <span class="chap-title">${esc(c.title)}</span>
+          ${hasSaved?'<span class="chap-saved">✦ gespeichert</span>':''}
+        </div>`;
+      }).join('');
   }
-  localStorage.setItem('lb_apikey', val);
-  document.getElementById('keyStatus').textContent = '✓ Key gespeichert';
-  document.getElementById('keyStatus').className = 'key-status ok';
+
+  s.innerHTML = `
+    <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
+    ${isIOS()?`<div class="install-tip"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Teilen → „Zum Home-Bildschirm" für App-Installation</div>`:''}
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+      <svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M12 11v6M9 14l3-3 3 3"/></svg>
+      <h3>${books.length?'Weiteres Buch laden':'ePub laden'}</h3>
+      <p>Tippe zum Auswählen${books.length?' · Mehrere möglich':''}</p>
+    </button>
+    ${books.length?`<div style="height:14px"></div><div class="sec-title">Meine Bücher</div>${booksHtml}<div style="height:10px"></div>${chapHtml}`:''}
+  `;
 }
 
-// ── ePub loading ───────────────────────────────────────
-async function loadEpub(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+function selectBook(id){
+  activeBookId = id;
+  activeChapIdx = null;
+  saveState();
+  renderLibrary();
+}
+
+function deleteBook(e, id){
+  e.stopPropagation();
+  if(!confirm('Buch und alle gespeicherten Inhalte entfernen?')) return;
+  // Remove saved entries for this book
+  Object.keys(saved).forEach(k=>{ if(k.startsWith(id+'_')) delete saved[k]; });
+  try { localStorage.removeItem('lb_text_'+id); } catch(e){}
+  books = books.filter(b=>b.id!==id);
+  if(activeBookId===id){ activeBookId = books[0]?.id||null; activeChapIdx=null; }
+  saveState();
+  renderLibrary();
+}
+
+function selectChap(i){
+  activeChapIdx = i;
+  saveState();
+  nav('learn');
+}
+
+// ─── Learn ────────────────────────────────────────────
+const TOOLS = [
+  {id:'summary',   name:'Zusammenfassung', desc:'Überblick & Kernaussagen',
+   icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+   badge:'badge-summary'},
+  {id:'flashcards',name:'Karteikarten',    desc:'Umklappbar & interaktiv',
+   icon:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>',
+   badge:'badge-flashcards'},
+  {id:'quiz',      name:'Quiz',           desc:'Multiple Choice',
+   icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+   badge:'badge-quiz'},
+  {id:'terms',     name:'Kernbegriffe',   desc:'Wichtige Konzepte',
+   icon:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+   badge:'badge-terms'},
+  {id:'questions', name:'Reflexion',      desc:'Fragen zum Nachdenken',
+   icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+   badge:'badge-questions'},
+];
+
+function renderLearn(){
   const s = document.getElementById('screen');
-  s.innerHTML = `<div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div>
-    <div class="loading-wrap"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Buch wird geladen…</div></div>`;
-  try {
-    const zip = await JSZip.loadAsync(file);
-    const opfPath = await findOpf(zip);
-    if (!opfPath) throw new Error('OPF-Datei nicht gefunden');
-    const opfText = await zip.file(opfPath).async('text');
-    const parser = new DOMParser();
-    const opfDoc = parser.parseFromString(opfText, 'application/xml');
-    const titleEl = opfDoc.querySelector('metadata title, metadata > *|title');
-    const authorEl = opfDoc.querySelector('metadata creator, metadata > *|creator');
-    bookMeta.title = titleEl ? titleEl.textContent.trim() : file.name.replace('.epub','');
-    bookMeta.author = authorEl ? authorEl.textContent.trim() : '';
-    const opfDir = opfPath.includes('/') ? opfPath.substring(0, opfPath.lastIndexOf('/')+1) : '';
-    const manifest = {};
-    opfDoc.querySelectorAll('manifest item').forEach(item => { manifest[item.getAttribute('id')] = { href: item.getAttribute('href'), type: item.getAttribute('media-type') }; });
-    chapters = [];
-    let idx = 0;
-    for (const itemref of opfDoc.querySelectorAll('spine itemref')) {
-      const item = manifest[itemref.getAttribute('idref')];
-      if (!item || !item.type?.includes('html')) continue;
-      const path = opfDir + item.href;
-      const entry = zip.file(path) || zip.file(decodeURIComponent(path));
-      if (!entry) continue;
-      const html = await entry.async('text');
-      const doc = parser.parseFromString(html, 'text/html');
-      const body = doc.body.textContent || '';
-      const trimmed = body.replace(/\s+/g, ' ').trim();
-      if (trimmed.length < 80) continue;
-      const h = doc.querySelector('h1,h2,h3');
-      let chapTitle = h ? h.textContent.trim() : `Kapitel ${++idx}`;
-      if (chapTitle.length > 70) chapTitle = chapTitle.slice(0,67)+'…';
-      chapters.push({ title: chapTitle, text: trimmed, words: Math.round(trimmed.split(' ').length) });
-    }
-    if (chapters.length === 0) throw new Error('Keine Kapitel gefunden');
-    renderLibrary();
-  } catch(e) {
-    s.innerHTML = `<div class="app-header"><div class="app-logo">Learn<span>Book</span></div></div><div class="error-box">Fehler: ${escHtml(e.message)}</div>`;
-  }
+  const book = books.find(b=>b.id===activeBookId);
+  if(!book){ s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><h3>Kein Buch geladen</h3><p>Gehe zu Bücher und lade ein ePub.</p></div>`; return; }
+  if(activeChapIdx===null){ s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><h3>Kein Kapitel gewählt</h3><p>Wähle unter Bücher ein Kapitel aus.</p></div>`; return; }
+
+  const ch = book.chapters[activeChapIdx];
+  const toolGrid = TOOLS.map(t=>{
+    const hasSaved = !!saved[savedKey(t.id)];
+    return `<button class="tool-card ${currentTool===t.id?'sel':''}" onclick="selTool('${t.id}')">
+      ${hasSaved?'<div class="tool-saved-dot"></div>':''}
+      <svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round">${t.icon}</svg>
+      <div class="tool-name">${t.name}</div>
+      <div class="tool-desc">${t.desc}</div>
+    </button>`;
+  }).join('');
+
+  const existing = saved[savedKey(currentTool)];
+
+  s.innerHTML = `
+    <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
+    <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${esc(book.title)} · Kapitel ${activeChapIdx+1}</div>
+      <div style="font-size:14px;font-weight:500">${esc(ch.title)}</div>
+    </div>
+    <div class="sec-title">Lernmodus</div>
+    <div class="tool-grid">${toolGrid}</div>
+    <button class="gen-btn" id="genBtn" onclick="generate()">✦ ${existing?'Neu generieren':'Generieren'}</button>
+    <div id="outputArea" style="margin-top:14px"></div>
+  `;
+
+  // Show existing saved content if available
+  if(existing) renderSavedContent(existing, false);
 }
 
-async function findOpf(zip) {
-  const c = zip.file('META-INF/container.xml');
-  if (c) { const xml = await c.async('text'); const m = xml.match(/full-path="([^"]+\.opf)"/); if (m) return m[1]; }
-  return Object.keys(zip.files).find(f => f.endsWith('.opf')) || null;
+function selTool(id){
+  currentTool = id;
+  document.getElementById('outputArea').innerHTML='';
+  document.querySelectorAll('.tool-card').forEach(c=>c.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+  // Update saved-dot visibility & gen button
+  const existing = saved[savedKey(currentTool)];
+  const btn = document.getElementById('genBtn');
+  if(btn) btn.textContent = existing ? '✦ Neu generieren' : '✦ Generieren';
+  if(existing) renderSavedContent(existing, false);
 }
 
-// ── Generate ───────────────────────────────────────────
-async function generate() {
+function savedKey(tool){ return `${activeBookId}_${activeChapIdx}_${tool}`; }
+
+// ─── Generate ─────────────────────────────────────────
+async function generate(){
   const key = localStorage.getItem('lb_apikey');
-  if (!key) { alert('Bitte zuerst den API-Key in den Einstellungen eintragen.'); showView('settings'); return; }
-  const ch = chapters[selectedChapterIdx];
-  const maxChars = 9000;
-  const text = ch.text.length > maxChars ? ch.text.slice(0, maxChars) + '\n[…gekürzt]' : ch.text;
+  if(!key){ alert('API-Key fehlt. Bitte unter Einstellungen eintragen.'); nav('settings'); return; }
+  const book = books.find(b=>b.id===activeBookId);
+  const ch = book.chapters[activeChapIdx];
+  const text = ch.text.length>9000 ? ch.text.slice(0,9000)+'\n[…gekürzt]' : ch.text;
 
   const prompts = {
-    summary: `Erstelle eine strukturierte Zusammenfassung auf Deutsch für folgendes Buchkapitel.
+    summary:`Erstelle eine strukturierte Zusammenfassung auf Deutsch.
 
-Format:
+Format (genau so):
 ÜBERBLICK
 (2-3 Sätze)
 
 KERNAUSSAGEN
-• ...
 • ...
 
 WICHTIGE PERSONEN / KONZEPTE
@@ -430,130 +387,289 @@ FAZIT
 Kapitel: "${ch.title}"
 Text: ${text}`,
 
-    flashcards: `Erstelle 8-12 Lernkarteikarten auf Deutsch. Antworte AUSSCHLIESSLICH als JSON-Array, kein anderer Text, keine Backticks:
-[{"front":"Begriff oder Frage","back":"Antwort oder Erklärung"}]
-
+    flashcards:`Erstelle 8-12 Lernkarteikarten auf Deutsch. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
+[{"front":"Begriff oder Frage","back":"Antwort"}]
 Kapitel: "${ch.title}"
 Text: ${text}`,
 
-    quiz: `Erstelle 6 Multiple-Choice-Fragen auf Deutsch. Antworte AUSSCHLIESSLICH als JSON-Array:
+    quiz:`Erstelle 6 Multiple-Choice-Fragen auf Deutsch. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
 [{"question":"Frage","options":["A","B","C","D"],"correct":0}]
-"correct" ist der Index der richtigen Antwort (0-3).
-
 Kapitel: "${ch.title}"
 Text: ${text}`,
 
-    terms: `Extrahiere 10-15 Kernbegriffe. Antworte AUSSCHLIESSLICH als JSON-Array:
-[{"term":"Begriff","definition":"Erklärung in 1-2 Sätzen"}]
-
+    terms:`Extrahiere 10-15 Kernbegriffe. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
+[{"term":"Begriff","definition":"1-2 Sätze Erklärung"}]
 Kapitel: "${ch.title}"
 Text: ${text}`,
 
-    questions: `Erstelle 6 tiefgehende Reflexionsfragen auf Deutsch (zum Nachdenken, nicht nur Faktenfragen). Nummerierte Liste.
-
+    questions:`Erstelle 6 tiefgehende Reflexionsfragen auf Deutsch als nummerierte Liste.
 Kapitel: "${ch.title}"
-Text: ${text}`
+Text: ${text}`,
   };
 
   const btn = document.getElementById('genBtn');
-  btn.disabled = true;
-  btn.textContent = '…';
-  document.getElementById('outputArea').innerHTML = `<div class="loading-wrap"><div class="loading-dots"><span></span><span></span><span></span></div><div class="loading-text">Claude denkt nach…</div></div>`;
+  btn.disabled=true; btn.textContent='…';
+  document.getElementById('outputArea').innerHTML=`<div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">Claude denkt nach…</div></div>`;
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role:'user', content: prompts[currentTool] }] })
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompts[currentTool]}]})
     });
-    if (!resp.ok) { const e = await resp.json(); throw new Error(e.error?.message || 'HTTP ' + resp.status); }
+    if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||'HTTP '+resp.status);}
     const data = await resp.json();
-    renderOutput(currentTool, data.content[0].text, ch.title);
-  } catch(e) {
-    document.getElementById('outputArea').innerHTML = `<div class="error-box">${escHtml(e.message)}</div>`;
-  }
+    const content = data.content[0].text;
 
-  btn.disabled = false;
-  btn.textContent = '✦ Erneut generieren';
+    // Parse & save
+    const entry = {type:currentTool, raw:content, savedAt:new Date().toLocaleDateString('de-DE')};
+    if(['flashcards','quiz','terms'].includes(currentTool)){
+      try{ entry.parsed = JSON.parse(extractJson(content)); } catch(e){ entry.parsed=null; }
+    }
+    saved[savedKey(currentTool)] = entry;
+    saveState();
+    renderSavedContent(entry, true);
+
+  } catch(e){
+    document.getElementById('outputArea').innerHTML=`<div class="err-box">${esc(e.message)}</div>`;
+  }
+  btn.disabled=false; btn.textContent='✦ Neu generieren';
 }
 
-function renderOutput(tab, content, title) {
+function renderSavedContent(entry, justGenerated){
   const out = document.getElementById('outputArea');
+  const t = TOOLS.find(x=>x.id===entry.type);
+  const savedBadge = `<span class="save-indicator">✦ gespeichert ${entry.savedAt}</span>`;
 
-  const icons = {
-    summary: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>',
-    flashcards: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/>',
-    quiz: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
-    terms: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>',
-    questions: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
-  };
-  const labels = { summary:'Zusammenfassung', flashcards:'Karteikarten', quiz:'Quiz', terms:'Kernbegriffe', questions:'Reflexionsfragen' };
+  const header = `<div class="out-header">
+    <div class="out-title"><svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round">${t.icon}</svg>${t.name}</div>
+    ${savedBadge}
+  </div>`;
 
-  const header = `<div class="output-header"><svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round;">${icons[tab]}</svg><div class="output-title">${labels[tab]}</div></div>`;
-
-  if (tab === 'summary' || tab === 'questions') {
-    out.innerHTML = `<div class="card">${header}<div class="prose">${escHtml(content)}</div></div>`; return;
+  if(entry.type==='summary'||entry.type==='questions'){
+    out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`; return;
   }
-
-  if (tab === 'flashcards') {
-    let cards; try { cards = JSON.parse(extractJson(content)); } catch(e) { out.innerHTML=`<div class="error-box">JSON-Fehler: ${escHtml(e.message)}<br><small>${escHtml(content.slice(0,200))}</small></div>`; return; }
-    let html = `<div class="card">${header}<div style="font-size:12px;color:var(--text3);margin-bottom:12px;">Tippe auf eine Karte um die Antwort zu sehen.</div>`;
-    cards.forEach((c,i) => { html += `<div class="flashcard" onclick="this.classList.toggle('flipped')"><div class="front">${escHtml(c.front)}</div><div class="tap-hint">Tippen zum Aufdecken</div><div class="back">${escHtml(c.back)}</div></div>`; });
-    out.innerHTML = html + '</div>'; return;
+  if(entry.type==='flashcards'){
+    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    let html=`<div class="card">${header}<div style="font-size:12px;color:var(--text3);margin-bottom:11px">Tippe zum Aufdecken</div>`;
+    entry.parsed.forEach(c=>{html+=`<div class="fc" onclick="this.classList.toggle('flip')"><div class="front">${esc(c.front)}</div><div class="hint">Tippen →</div><div class="back">${esc(c.back)}</div></div>`;});
+    out.innerHTML=html+'</div>'; return;
   }
-
-  if (tab === 'quiz') {
-    let qs; try { qs = JSON.parse(extractJson(content)); } catch(e) { out.innerHTML=`<div class="error-box">JSON-Fehler: ${escHtml(e.message)}</div>`; return; }
-    quizData = qs; quizIdx = 0;
+  if(entry.type==='quiz'){
+    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    quizData=entry.parsed; quizIdx=0;
     renderQuizQ(header); return;
   }
-
-  if (tab === 'terms') {
-    let terms; try { terms = JSON.parse(extractJson(content)); } catch(e) { out.innerHTML=`<div class="error-box">JSON-Fehler: ${escHtml(e.message)}</div>`; return; }
-    let html = `<div class="card">${header}`;
-    terms.forEach(t => { html += `<div class="term-item"><div class="term-name">${escHtml(t.term)}</div><div class="term-def">${escHtml(t.definition)}</div></div>`; });
-    out.innerHTML = html + '</div>';
+  if(entry.type==='terms'){
+    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    let html=`<div class="card">${header}`;
+    entry.parsed.forEach(t=>{html+=`<div class="term"><div class="term-name">${esc(t.term)}</div><div class="term-def">${esc(t.definition)}</div></div>`;});
+    out.innerHTML=html+'</div>';
   }
 }
 
-function renderQuizQ(header) {
+function renderQuizQ(header){
   const out = document.getElementById('outputArea');
   const q = quizData[quizIdx];
-  const opts = q.options.map((o,i) => `<button class="quiz-opt" onclick="answerQ(${i})" id="qopt${i}">${escHtml(o)}</button>`).join('');
-  out.innerHTML = `<div class="card">${header || ''}<div class="quiz-progress">Frage ${quizIdx+1} von ${quizData.length}</div><div class="quiz-q-text">${escHtml(q.question)}</div>${opts}</div>`;
+  const opts = q.options.map((o,i)=>`<button class="quiz-opt" onclick="ansQ(${i})" id="qo${i}">${esc(o)}</button>`).join('');
+  out.innerHTML=`<div class="card">${header||''}<div class="quiz-prog">Frage ${quizIdx+1} von ${quizData.length}</div><div class="quiz-q">${esc(q.question)}</div>${opts}</div>`;
 }
-
-function answerQ(chosen) {
-  const q = quizData[quizIdx];
-  for (let i = 0; i < q.options.length; i++) {
-    const b = document.getElementById('qopt'+i);
-    b.disabled = true;
-    if (i === q.correct) b.className = 'quiz-opt correct';
-    else if (i === chosen) b.className = 'quiz-opt wrong';
+function ansQ(chosen){
+  const q=quizData[quizIdx];
+  for(let i=0;i<q.options.length;i++){
+    const b=document.getElementById('qo'+i);
+    b.disabled=true;
+    if(i===q.correct)b.className='quiz-opt correct';
+    else if(i===chosen)b.className='quiz-opt wrong';
   }
-  const card = document.querySelector('#outputArea .card');
-  const nav = document.createElement('div');
-  nav.className = 'quiz-nav';
-  if (quizIdx < quizData.length - 1) {
-    nav.innerHTML = `<button onclick="quizNext()">Nächste Frage →</button>`;
-  } else {
-    nav.innerHTML = `<button onclick="generate()">Quiz wiederholen</button>`;
+  const card=document.querySelector('#outputArea .card');
+  const nav_=document.createElement('div'); nav_.className='quiz-nav';
+  if(quizIdx<quizData.length-1) nav_.innerHTML=`<button onclick="quizNext()">Nächste →</button>`;
+  else nav_.innerHTML=`<button onclick="restartQuiz()">Wiederholen</button>`;
+  card.appendChild(nav_);
+}
+function quizNext(){quizIdx++;renderQuizQ();}
+function restartQuiz(){quizIdx=0;renderQuizQ();}
+
+// ─── Saved view ───────────────────────────────────────
+function renderSaved(){
+  const s = document.getElementById('screen');
+  const allKeys = Object.keys(saved);
+  if(allKeys.length===0){
+    s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 0 2-2 2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><h3>Noch nichts gespeichert</h3><p>Generiere Inhalte unter „Lernen" – sie werden automatisch gespeichert.</p></div>`;
+    return;
   }
-  card.appendChild(nav);
+
+  // Group by book
+  const byBook = {};
+  allKeys.forEach(k=>{
+    const [bookId, chapIdx, tool] = k.split('_');
+    if(!byBook[bookId]) byBook[bookId]=[];
+    byBook[bookId].push({k, chapIdx:parseInt(chapIdx), tool});
+  });
+
+  let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div>`;
+  Object.entries(byBook).forEach(([bookId, entries])=>{
+    const book = books.find(b=>b.id===bookId);
+    const bookTitle = book?.title || 'Unbekanntes Buch';
+    const [c1] = book?.color||['#6ee7b7'];
+    html+=`<div class="saved-book-section"><div class="saved-book-title"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${c1};margin-right:4px"></span>${esc(bookTitle)}</div>`;
+
+    // Sort by chapIdx
+    entries.sort((a,b)=>a.chapIdx-b.chapIdx || a.tool.localeCompare(b.tool));
+    entries.forEach(({k, chapIdx, tool})=>{
+      const entry = saved[k];
+      const chapTitle = book?.chapters[chapIdx]?.title || `Kapitel ${chapIdx+1}`;
+      const t = TOOLS.find(x=>x.id===tool);
+      const entryId = 'se_'+k.replace(/_/g,'X');
+      html+=`<div class="saved-entry">
+        <div class="saved-entry-hdr" onclick="toggleSavedEntry('${entryId}')">
+          <span class="saved-type-badge ${t.badge}">${t.name}</span>
+          <span class="saved-entry-title">${esc(chapTitle)}</span>
+          <span style="font-size:11px;color:var(--text3)">${entry.savedAt}</span>
+          <button class="saved-del" onclick="delSaved(event,'${k}')" title="Löschen">✕</button>
+        </div>
+        <div class="saved-entry-body" id="${entryId}">
+          ${renderSavedPreview(entry)}
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  s.innerHTML=html;
 }
 
-function quizNext() { quizIdx++; renderQuizQ(); }
-
-// ── Helpers ────────────────────────────────────────────
-function extractJson(text) {
-  const m = text.match(/```json\s*([\s\S]*?)```/) || text.match(/```\s*([\s\S]*?)```/) || text.match(/(\[[\s\S]*\])/);
-  return m ? m[1].trim() : text.trim();
+function renderSavedPreview(entry){
+  if(entry.type==='summary'||entry.type==='questions') return `<div class="prose" style="font-size:13px">${esc(entry.raw)}</div>`;
+  if(entry.type==='flashcards'&&entry.parsed){
+    return entry.parsed.map(c=>`<div class="fc" onclick="this.classList.toggle('flip')" style="margin-bottom:7px"><div class="front">${esc(c.front)}</div><div class="hint">Tippen →</div><div class="back">${esc(c.back)}</div></div>`).join('');
+  }
+  if(entry.type==='quiz'&&entry.parsed){
+    return entry.parsed.map((q,i)=>`<div style="margin-bottom:10px"><div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px">${i+1}. ${esc(q.question)}</div>${q.options.map((o,oi)=>`<div style="font-size:12px;padding:6px 10px;margin-bottom:4px;border-radius:var(--rsm);background:${oi===q.correct?'rgba(110,231,183,.12)':'var(--bg3)'};border:1px solid ${oi===q.correct?'rgba(110,231,183,.4)':'var(--border)'};color:${oi===q.correct?'var(--accent)':'var(--text2)'}">${esc(o)}</div>`).join('')}</div>`).join('');
+  }
+  if(entry.type==='terms'&&entry.parsed){
+    return entry.parsed.map(t=>`<div class="term" style="margin-bottom:6px"><div class="term-name">${esc(t.term)}</div><div class="term-def">${esc(t.definition)}</div></div>`).join('');
+  }
+  return `<div class="prose" style="font-size:13px">${esc(entry.raw)}</div>`;
 }
-function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent); }
 
-// ── Init ───────────────────────────────────────────────
-renderLibrary();
+function toggleSavedEntry(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+}
+function delSaved(e,k){
+  e.stopPropagation();
+  delete saved[k];
+  saveState();
+  renderSaved();
+}
+
+// ─── Settings ─────────────────────────────────────────
+function renderSettings(){
+  const s=document.getElementById('screen');
+  const key=localStorage.getItem('lb_apikey')||'';
+  const totalSaved=Object.keys(saved).length;
+  s.innerHTML=`
+    <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
+    <div class="card">
+      <div class="setting-label">Anthropic API-Key</div>
+      <input type="password" class="setting-input" id="apiKeyInput" placeholder="sk-ant-..." value="${esc(key)}">
+      <div class="key-status ${key?'key-ok':''}" id="keyStatus">${key?'✓ Key gespeichert':''}</div>
+      <div style="margin-top:7px;font-size:12px;color:var(--text3)">Nur lokal gespeichert · <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent)">Key erstellen →</a></div>
+      <div class="btn-row"><button class="btn-acc" onclick="saveKey()">Speichern</button></div>
+    </div>
+    <div class="card">
+      <div class="setting-label">Daten</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:10px">${books.length} Bücher · ${totalSaved} gespeicherte Inhalte</div>
+      <button class="btn-sec" onclick="clearAllSaved()">Alle gespeicherten Inhalte löschen</button>
+    </div>
+    ${isIOS()?`<div class="card"><div class="setting-label">Als App installieren</div><div style="font-size:13px;color:var(--text2);line-height:1.6">In Safari: <strong style="color:var(--text)">Teilen-Symbol</strong> → <strong style="color:var(--text)">„Zum Home-Bildschirm"</strong></div></div>`:''}
+  `;
+}
+function saveKey(){
+  const v=document.getElementById('apiKeyInput').value.trim();
+  if(!v.startsWith('sk-ant-')){document.getElementById('keyStatus').textContent='✗ Ungültig (muss mit sk-ant- beginnen)';document.getElementById('keyStatus').className='key-status key-err';return;}
+  localStorage.setItem('lb_apikey',v);
+  document.getElementById('keyStatus').textContent='✓ Key gespeichert';
+  document.getElementById('keyStatus').className='key-status key-ok';
+}
+function clearAllSaved(){
+  if(!confirm('Alle gespeicherten Inhalte löschen?')) return;
+  saved={};
+  saveState();
+  renderSettings();
+}
+
+// ─── ePub loading ─────────────────────────────────────
+async function loadEpubs(event){
+  const files = Array.from(event.target.files);
+  if(!files.length) return;
+  const s=document.getElementById('screen');
+  s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">${files.length>1?files.length+' Bücher werden':'Buch wird'} geladen…</div></div>`;
+
+  for(const file of files){
+    try {
+      const zip = await JSZip.loadAsync(file);
+      const opfPath = await findOpf(zip);
+      if(!opfPath) continue;
+      const opfText = await zip.file(opfPath).async('text');
+      const parser = new DOMParser();
+      const opfDoc = parser.parseFromString(opfText,'application/xml');
+      const titleEl = opfDoc.querySelector('metadata title,metadata > *|title');
+      const authorEl = opfDoc.querySelector('metadata creator,metadata > *|creator');
+      const title = titleEl?titleEl.textContent.trim():file.name.replace('.epub','');
+      const author = authorEl?authorEl.textContent.trim():'';
+      const opfDir = opfPath.includes('/')?opfPath.substring(0,opfPath.lastIndexOf('/')+1):'';
+      const manifest={};
+      opfDoc.querySelectorAll('manifest item').forEach(item=>{manifest[item.getAttribute('id')]={href:item.getAttribute('href'),type:item.getAttribute('media-type')};});
+      const chapters=[];
+      let idx=0;
+      for(const itemref of opfDoc.querySelectorAll('spine itemref')){
+        const item=manifest[itemref.getAttribute('idref')];
+        if(!item||!item.type?.includes('html')) continue;
+        const path=opfDir+item.href;
+        const entry=zip.file(path)||zip.file(decodeURIComponent(path));
+        if(!entry) continue;
+        const html=await entry.async('text');
+        const doc=parser.parseFromString(html,'text/html');
+        const body=doc.body.textContent||'';
+        const trimmed=body.replace(/\s+/g,' ').trim();
+        if(trimmed.length<80) continue;
+        const h=doc.querySelector('h1,h2,h3');
+        let chapTitle=h?h.textContent.trim():`Kapitel ${++idx}`;
+        if(chapTitle.length>70) chapTitle=chapTitle.slice(0,67)+'…';
+        chapters.push({title:chapTitle,text:trimmed,words:Math.round(trimmed.split(' ').length)});
+      }
+      if(!chapters.length) continue;
+      const [c1,c2]=COLORS[colorIdx%COLORS.length]; colorIdx++;
+      const id='book_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+      books.push({id,title,author,color:[c1,c2],chapters});
+      if(!activeBookId) activeBookId=id;
+    } catch(e){ console.error(e); }
+  }
+  saveState();
+  event.target.value='';
+  nav('library');
+}
+
+async function findOpf(zip){
+  const c=zip.file('META-INF/container.xml');
+  if(c){const xml=await c.async('text');const m=xml.match(/full-path="([^"]+\.opf)"/);if(m)return m[1];}
+  return Object.keys(zip.files).find(f=>f.endsWith('.opf'))||null;
+}
+
+// ─── Helpers ──────────────────────────────────────────
+function extractJson(text){
+  const m=text.match(/```json\s*([\s\S]*?)```/)||text.match(/```\s*([\s\S]*?)```/)||text.match(/(\[[\s\S]*\])/);
+  return m?m[1].trim():text.trim();
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent);}
+
+// ─── Init ─────────────────────────────────────────────
+loadState();
+loadFullBooks();
+render();
 </script>
 </body>
 </html>
