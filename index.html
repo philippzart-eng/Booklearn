@@ -173,6 +173,9 @@ let currentView = 'library';
 let quizData = [], quizIdx = 0;
 // saved: {bookId_chapIdx_tool: {type, content_json_or_text, savedAt}}
 let saved = {};
+let pendingEntry = null; // generated but not yet saved
+let savedViewBook = null;
+let savedViewChap = null;
 
 const COLORS = [
   ['#6ee7b7','#059669'],['#60a5fa','#1d4ed8'],['#f472b6','#be185d'],
@@ -210,6 +213,8 @@ function loadFullBooks(){
 // ─── Nav ──────────────────────────────────────────────
 function nav(view){
   currentView = view;
+  if(view==='saved'){ savedViewBook=null; savedViewChap=null; }
+  if(view==='learn'){ pendingEntry=null; }
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nb-'+view).classList.add('active');
   render();
@@ -328,8 +333,6 @@ function renderLearn(){
     </button>`;
   }).join('');
 
-  const existing = saved[savedKey(currentTool)];
-
   s.innerHTML = `
     <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
     <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
@@ -338,24 +341,19 @@ function renderLearn(){
     </div>
     <div class="sec-title">Lernmodus</div>
     <div class="tool-grid">${toolGrid}</div>
-    <button class="gen-btn" id="genBtn" onclick="generate()">✦ ${existing?'Neu generieren':'Generieren'}</button>
+    <button class="gen-btn" id="genBtn" onclick="generate()">✦ Generieren</button>
     <div id="outputArea" style="margin-top:14px"></div>
   `;
-
-  // Show existing saved content if available
-  if(existing) renderSavedContent(existing, false);
 }
 
 function selTool(id){
   currentTool = id;
+  pendingEntry = null;
   document.getElementById('outputArea').innerHTML='';
   document.querySelectorAll('.tool-card').forEach(c=>c.classList.remove('sel'));
   event.currentTarget.classList.add('sel');
-  // Update saved-dot visibility & gen button
-  const existing = saved[savedKey(currentTool)];
   const btn = document.getElementById('genBtn');
-  if(btn) btn.textContent = existing ? '✦ Neu generieren' : '✦ Generieren';
-  if(existing) renderSavedContent(existing, false);
+  if(btn) btn.textContent = '✦ Generieren';
 }
 
 function savedKey(tool){ return `${activeBookId}_${activeChapIdx}_${tool}`; }
@@ -421,14 +419,13 @@ Text: ${text}`,
     const data = await resp.json();
     const content = data.content[0].text;
 
-    // Parse & save
+    // Build entry but don't save yet — user must tap Speichern
     const entry = {type:currentTool, raw:content, savedAt:new Date().toLocaleDateString('de-DE')};
     if(['flashcards','quiz','terms'].includes(currentTool)){
       try{ entry.parsed = JSON.parse(extractJson(content)); } catch(e){ entry.parsed=null; }
     }
-    saved[savedKey(currentTool)] = entry;
-    saveState();
-    renderSavedContent(entry, true);
+    pendingEntry = entry;
+    renderGeneratedContent(entry);
 
   } catch(e){
     document.getElementById('outputArea').innerHTML=`<div class="err-box">${esc(e.message)}</div>`;
@@ -436,35 +433,72 @@ Text: ${text}`,
   btn.disabled=false; btn.textContent='✦ Neu generieren';
 }
 
-function renderSavedContent(entry, justGenerated){
+// Render freshly generated content with a save button
+function renderGeneratedContent(entry){
   const out = document.getElementById('outputArea');
   const t = TOOLS.find(x=>x.id===entry.type);
-  const savedBadge = `<span class="save-indicator">✦ gespeichert ${entry.savedAt}</span>`;
+  const alreadySaved = !!saved[savedKey(currentTool)];
+
+  const saveBtn = `<div style="margin-top:14px;display:flex;gap:8px">
+    <button class="btn-acc" id="saveBtn" onclick="saveCurrentEntry()" style="flex:1;padding:12px;font-size:14px">${alreadySaved?'✦ Ersetzen & speichern':'✦ Speichern'}</button>
+  </div>`;
 
   const header = `<div class="out-header">
     <div class="out-title"><svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round">${t.icon}</svg>${t.name}</div>
-    ${savedBadge}
   </div>`;
 
+  _renderEntryInto(out, entry, header, saveBtn);
+}
+
+function saveCurrentEntry(){
+  if(!pendingEntry) return;
+  saved[savedKey(currentTool)] = pendingEntry;
+  pendingEntry = null;
+  saveState();
+  // Update save button to confirmation
+  const btn = document.getElementById('saveBtn');
+  if(btn){ btn.textContent='✓ Gespeichert'; btn.disabled=true; btn.style.opacity='0.7'; }
+  // Refresh tool dots
+  document.querySelectorAll('.tool-saved-dot').forEach(d=>d.remove());
+  const selCard = document.querySelector('.tool-card.sel');
+  if(selCard&&!selCard.querySelector('.tool-saved-dot')){
+    const dot=document.createElement('div'); dot.className='tool-saved-dot'; selCard.prepend(dot);
+  }
+}
+
+// Render saved content (from saved tab, no save button)
+function renderSavedContent(entry){
+  const out = document.getElementById('outputArea');
+  const t = TOOLS.find(x=>x.id===entry.type);
+  const header = `<div class="out-header">
+    <div class="out-title"><svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round">${t.icon}</svg>${t.name}</div>
+    <span class="save-indicator">✦ ${entry.savedAt}</span>
+  </div>`;
+  _renderEntryInto(out, entry, header, '');
+}
+
+function _renderEntryInto(out, entry, header, extra){
   if(entry.type==='summary'||entry.type==='questions'){
-    out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`; return;
+    out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div>${extra}</div>`; return;
   }
   if(entry.type==='flashcards'){
-    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div>${extra}</div>`;return;}
     let html=`<div class="card">${header}<div style="font-size:12px;color:var(--text3);margin-bottom:11px">Tippe zum Aufdecken</div>`;
     entry.parsed.forEach(c=>{html+=`<div class="fc" onclick="this.classList.toggle('flip')"><div class="front">${esc(c.front)}</div><div class="hint">Tippen →</div><div class="back">${esc(c.back)}</div></div>`;});
-    out.innerHTML=html+'</div>'; return;
+    out.innerHTML=html+extra+'</div>'; return;
   }
   if(entry.type==='quiz'){
-    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div>${extra}</div>`;return;}
     quizData=entry.parsed; quizIdx=0;
-    renderQuizQ(header); return;
+    renderQuizQ(header);
+    if(extra){ const c=document.querySelector('#outputArea .card'); if(c) c.insertAdjacentHTML('beforeend',extra); }
+    return;
   }
   if(entry.type==='terms'){
-    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    if(!entry.parsed){out.innerHTML=`<div class="card">${header}<div class="prose">${esc(entry.raw)}</div>${extra}</div>`;return;}
     let html=`<div class="card">${header}`;
     entry.parsed.forEach(t=>{html+=`<div class="term"><div class="term-name">${esc(t.term)}</div><div class="term-def">${esc(t.definition)}</div></div>`;});
-    out.innerHTML=html+'</div>';
+    out.innerHTML=html+extra+'</div>';
   }
 }
 
@@ -495,46 +529,89 @@ function restartQuiz(){quizIdx=0;renderQuizQ();}
 function renderSaved(){
   const s = document.getElementById('screen');
   const allKeys = Object.keys(saved);
-  if(allKeys.length===0){
-    s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 0 2-2 2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><h3>Noch nichts gespeichert</h3><p>Generiere Inhalte unter „Lernen" – sie werden automatisch gespeichert.</p></div>`;
-    return;
-  }
 
-  // Group by book
-  const byBook = {};
-  allKeys.forEach(k=>{
-    const [bookId, chapIdx, tool] = k.split('_');
-    if(!byBook[bookId]) byBook[bookId]=[];
-    byBook[bookId].push({k, chapIdx:parseInt(chapIdx), tool});
-  });
-
-  let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div>`;
-  Object.entries(byBook).forEach(([bookId, entries])=>{
-    const book = books.find(b=>b.id===bookId);
-    const bookTitle = book?.title || 'Unbekanntes Buch';
-    const [c1] = book?.color||['#6ee7b7'];
-    html+=`<div class="saved-book-section"><div class="saved-book-title"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${c1};margin-right:4px"></span>${esc(bookTitle)}</div>`;
-
-    // Sort by chapIdx
-    entries.sort((a,b)=>a.chapIdx-b.chapIdx || a.tool.localeCompare(b.tool));
-    entries.forEach(({k, chapIdx, tool})=>{
-      const entry = saved[k];
-      const chapTitle = book?.chapters[chapIdx]?.title || `Kapitel ${chapIdx+1}`;
-      const t = TOOLS.find(x=>x.id===tool);
-      const entryId = 'se_'+k.replace(/_/g,'X');
-      html+=`<div class="saved-entry">
-        <div class="saved-entry-hdr" onclick="toggleSavedEntry('${entryId}')">
-          <span class="saved-type-badge ${t.badge}">${t.name}</span>
-          <span class="saved-entry-title">${esc(chapTitle)}</span>
-          <span style="font-size:11px;color:var(--text3)">${entry.savedAt}</span>
-          <button class="saved-del" onclick="delSaved(event,'${k}')" title="Löschen">✕</button>
+  // Level 1: book list
+  if(savedViewBook === null){
+    const booksWithSaved = books.filter(b=>allKeys.some(k=>k.startsWith(b.id+'_')));
+    if(booksWithSaved.length===0){
+      s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 0 2-2h10a2 2 0 0 1 2 2z"/></svg><h3>Noch nichts gespeichert</h3><p>Generiere Inhalte unter „Lernen" und tippe auf „Speichern".</p></div>`;
+      return;
+    }
+    let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
+      <div class="sec-title">Buch wählen</div>`;
+    booksWithSaved.forEach(b=>{
+      const count = allKeys.filter(k=>k.startsWith(b.id+'_')).length;
+      const [c1,c2]=b.color;
+      html+=`<div class="book-row" onclick="savedViewBook='${b.id}';savedViewChap=null;renderSaved()">
+        <div class="book-spine" style="background:linear-gradient(135deg,${c1},${c2})">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         </div>
-        <div class="saved-entry-body" id="${entryId}">
-          ${renderSavedPreview(entry)}
+        <div class="book-row-info">
+          <div class="book-row-title">${esc(b.title)}</div>
+          <div class="book-row-meta">${esc(b.author||'')} · ${count} gespeicherte Inhalte</div>
         </div>
+        <span style="font-size:18px;color:var(--text3);padding:0 4px">›</span>
       </div>`;
     });
-    html+='</div>';
+    s.innerHTML=html; return;
+  }
+
+  // Level 2: chapter list for a book
+  const book = books.find(b=>b.id===savedViewBook);
+  if(!book){ savedViewBook=null; renderSaved(); return; }
+
+  if(savedViewChap === null){
+    const chapKeys = allKeys.filter(k=>k.startsWith(book.id+'_'));
+    const chapIdxs = [...new Set(chapKeys.map(k=>parseInt(k.split('_')[1])))].sort((a,b)=>a-b);
+    let html=`<div class="app-header">
+      <div class="logo">Learn<span>Book</span></div>
+      <button class="hdr-btn" onclick="savedViewBook=null;savedViewChap=null;renderSaved()">← Zurück</button>
+    </div>
+    <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:2px">Gespeicherte Inhalte</div>
+      <div style="font-size:14px;font-weight:500">${esc(book.title)}</div>
+    </div>
+    <div class="sec-title">Kapitel wählen</div>`;
+    chapIdxs.forEach(ci=>{
+      const ch = book.chapters[ci];
+      const count = chapKeys.filter(k=>k.split('_')[1]===String(ci)).length;
+      html+=`<div class="chap-item" onclick="savedViewChap=${ci};renderSaved()">
+        <span class="chap-num">${ci+1}</span>
+        <span class="chap-title">${esc(ch?.title||'Kapitel '+(ci+1))}</span>
+        <span class="chap-saved">${count} Inhalt${count>1?'e':''}</span>
+      </div>`;
+    });
+    s.innerHTML=html; return;
+  }
+
+  // Level 3: content list for a chapter
+  const ci = savedViewChap;
+  const ch = book.chapters[ci];
+  const entries = allKeys
+    .filter(k=>k.startsWith(book.id+'_'+ci+'_'))
+    .map(k=>({k, tool:k.split('_')[2], entry:saved[k]}))
+    .sort((a,b)=>a.tool.localeCompare(b.tool));
+
+  let html=`<div class="app-header">
+    <div class="logo">Learn<span>Book</span></div>
+    <button class="hdr-btn" onclick="savedViewChap=null;renderSaved()">← Zurück</button>
+  </div>
+  <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
+    <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${esc(book.title)} · Kapitel ${ci+1}</div>
+    <div style="font-size:14px;font-weight:500">${esc(ch?.title||'')}</div>
+  </div>`;
+
+  entries.forEach(({k, tool, entry})=>{
+    const t = TOOLS.find(x=>x.id===tool);
+    const entryId='se_'+k.replace(/_/g,'X');
+    html+=`<div class="saved-entry" style="margin-bottom:8px">
+      <div class="saved-entry-hdr" onclick="toggleSavedEntry('${entryId}')">
+        <span class="saved-type-badge ${t.badge}">${t.name}</span>
+        <span class="saved-entry-title" style="color:var(--text2)">${entry.savedAt}</span>
+        <button class="saved-del" onclick="delSaved(event,'${k}')" title="Löschen">✕</button>
+      </div>
+      <div class="saved-entry-body" id="${entryId}">${renderSavedPreview(entry)}</div>
+    </div>`;
   });
   s.innerHTML=html;
 }
