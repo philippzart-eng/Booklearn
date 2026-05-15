@@ -240,9 +240,10 @@ function render(){
 // ─── Progress helpers ─────────────────────────────────
 function chapProgress(bookId,chapIdx){
   const total=TOOLS.length;
+  const pfx=bookId+'_'+chapIdx+'_';
   const done=TOOLS.filter(t=>{
-    if(t.id==='quiz'||t.id==='flashcards') return Object.keys(saved).some(k=>k.startsWith(bookId+'_'+chapIdx+'_'+t.id+'_'));
-    return !!saved[bookId+'_'+chapIdx+'_'+t.id];
+    if(t.id==='quiz'||t.id==='flashcards') return Object.keys(saved).some(k=>k.startsWith(pfx+t.id+'_')||k===pfx+t.id);
+    return !!saved[pfx+t.id];
   }).length;
   return Math.round((done/total)*100);
 }
@@ -684,9 +685,13 @@ function renderSaved(){
   const book=books.find(b=>b.id===savedViewBook);
   if(!book){savedViewBook=null;renderSaved();return;}
 
+  // Helper: extract chapIdx from key (strip bookId prefix, then parse next segment)
+  const prefix=book.id+'_';
+  const getChapIdx=k=>parseInt(k.slice(prefix.length).split('_')[0]);
+
   if(savedViewChap===null){
-    const chapKeys=allKeys.filter(k=>k.startsWith(book.id+'_'));
-    const chapIdxs=[...new Set(chapKeys.map(k=>parseInt(k.split('_')[1])))].sort((a,b)=>a-b);
+    const chapKeys=allKeys.filter(k=>k.startsWith(prefix));
+    const chapIdxs=[...new Set(chapKeys.map(k=>getChapIdx(k)).filter(n=>!isNaN(n)))].sort((a,b)=>a-b);
     let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div><button class="hdr-btn" onclick="savedViewBook=null;renderSaved()">← Zurück</button></div>
       <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
         <div style="font-size:11px;color:var(--text3);margin-bottom:2px">Gespeicherte Inhalte</div>
@@ -694,7 +699,7 @@ function renderSaved(){
       </div>
       <div class="sec-title">Kapitel wählen</div>`;
     chapIdxs.forEach(ci=>{
-      const ch=book.chapters[ci];const count=chapKeys.filter(k=>k.split('_')[1]===String(ci)).length;
+      const ch=book.chapters[ci];const count=chapKeys.filter(k=>getChapIdx(k)===ci).length;
       html+=`<div class="chap-item" onclick="savedViewChap=${ci};renderSaved()">
         <span class="chap-num">${ci+1}</span>
         <span class="chap-title">${esc(ch?.title||'Kapitel '+(ci+1))}</span>
@@ -705,8 +710,10 @@ function renderSaved(){
   }
 
   const ci=savedViewChap;const ch=book.chapters[ci];
-  const entries=allKeys.filter(k=>k.startsWith(book.id+'_'+ci+'_'))
-    .map(k=>({k,tool:k.split('_')[2],entry:saved[k]}))
+  // Use entry.type (stored on object) instead of parsing from key
+  const entries=allKeys.filter(k=>k.startsWith(prefix+ci+'_'))
+    .map(k=>({k,tool:saved[k]?.type||'',entry:saved[k]}))
+    .filter(e=>e.tool)
     .sort((a,b)=>a.tool.localeCompare(b.tool));
 
   let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div><button class="hdr-btn" onclick="savedViewChap=null;renderSaved()">← Zurück</button></div>
