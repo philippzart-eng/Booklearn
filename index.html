@@ -4,157 +4,186 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="LearnBook">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#faf7f2">
 <title>LearnBook</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--accent:#6ee7b7;--accent2:#34d399;--text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--red:#f87171;--r:14px;--rsm:10px;--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px)}
+:root{
+  --bg:#faf7f2;--bg2:#f3ede3;--bg3:#e8ddd0;
+  --accent:#d97706;--accent2:#b45309;
+  --text:#2c1a0e;--text2:#6b4c2a;--text3:#a8926a;
+  --border:rgba(139,90,43,0.15);--border2:rgba(139,90,43,0.3);
+  --green:#3b6d11;--green-bg:rgba(59,109,17,0.1);
+  --red:#c0392b;--red-bg:rgba(192,57,43,0.08);
+  --blue:#185FA5;--blue-bg:rgba(24,95,165,0.08);
+  --r:14px;--rsm:10px;
+  --sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overscroll-behavior:none}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Source Sans 3',sans-serif;overscroll-behavior:none}
 body{display:flex;flex-direction:column}
-#screen{flex:1;overflow-y:auto;padding:calc(var(--st) + 14px) 15px 0;padding-bottom:calc(76px + var(--sb))}
+#screen{flex:1;overflow-y:auto;padding:calc(var(--st)+14px) 15px 0;padding-bottom:calc(76px + var(--sb))}
 .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.logo{font-family:'Lora',serif;font-size:21px;color:var(--accent)}.logo span{color:var(--text3);font-weight:400}
-.hdr-btn{background:none;border:none;color:var(--text3);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:4px 8px}
-#bottomNav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 calc(8px + var(--sb));display:flex}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--text3);font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:4px 0;transition:color .2s}
+.logo{font-family:'Playfair Display',serif;font-size:21px;color:var(--accent)}.logo span{color:var(--text3);font-weight:400}
+.hdr-btn{background:none;border:none;color:var(--text3);font-size:13px;font-family:'Source Sans 3',sans-serif;cursor:pointer;padding:4px 8px}
+#bottomNav{position:fixed;bottom:0;left:0;right:0;background:rgba(250,247,242,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 calc(8px + var(--sb));display:flex}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--text3);font-size:10px;font-family:'Source Sans 3',sans-serif;cursor:pointer;padding:4px 0;transition:color .2s}
 .nav-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .nav-btn.active{color:var(--accent)}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:15px;margin-bottom:11px}
 .card-sm{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:11px 13px}
 .sec-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:9px;font-weight:500}
+/* Upload */
 .upload-btn{border:1.5px dashed var(--border2);border-radius:var(--r);padding:28px 16px;text-align:center;cursor:pointer;width:100%;background:transparent;transition:background .2s;display:block}
 .upload-btn:active{background:var(--bg2)}
 .upload-btn svg{width:36px;height:36px;stroke:var(--accent);margin-bottom:10px;stroke-width:1.5}
-.upload-btn h3{font-family:'Lora',serif;font-size:17px;color:var(--text);margin-bottom:5px}
+.upload-btn h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);margin-bottom:5px}
 .upload-btn p{font-size:13px;color:var(--text2)}
+/* Book rows */
 .book-row{display:flex;align-items:center;gap:12px;padding:12px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:8px;cursor:pointer;transition:border-color .15s}
 .book-row:active{background:var(--bg3)}.book-row.active-book{border-color:var(--accent)}
 .book-spine{width:40px;height:52px;border-radius:3px 7px 7px 3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.book-spine svg{width:20px;height:20px;stroke:#0f172a;stroke-width:2;fill:none}
+.book-spine svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
 .book-row-info{flex:1;min-width:0}
 .book-row-title{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .book-row-meta{font-size:11px;color:var(--text3);margin-top:2px}
 .book-row-del{background:none;border:none;color:var(--text3);cursor:pointer;padding:6px;font-size:16px;flex-shrink:0}
-/* Progress bar */
+/* Progress */
 .prog-bar-wrap{height:4px;background:var(--bg3);border-radius:99px;margin-top:6px;overflow:hidden}
-.prog-bar-fill{height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.prog-bar-fill{height:100%;background:var(--accent);border-radius:99px;transition:width .4s;opacity:.85}
+/* Learning path */
+.path-wrap{display:flex;gap:0;margin-bottom:16px;overflow:hidden;border-radius:var(--rsm);border:1px solid var(--border)}
+.path-step{flex:1;padding:10px 4px;text-align:center;cursor:pointer;transition:background .15s;position:relative;border-right:1px solid var(--border)}
+.path-step:last-child{border-right:none}
+.path-step.done{background:rgba(217,119,6,.08)}
+.path-step.active{background:rgba(217,119,6,.15)}
+.path-step.locked{opacity:.45;cursor:default}
+.path-step-icon{font-size:18px;display:block;margin-bottom:2px}
+.path-step-label{font-size:9px;color:var(--text3);line-height:1.2}
+.path-step.active .path-step-label{color:var(--accent2);font-weight:500}
+.path-step.done .path-step-label{color:var(--green)}
+.path-check{position:absolute;top:4px;right:4px;font-size:9px;color:var(--green)}
 /* Chapter list */
 .chap-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;cursor:pointer;transition:all .15s}
-.chap-item:active{background:var(--bg3)}.chap-item.selected{border-color:var(--accent);background:rgba(110,231,183,.07)}
+.chap-item:active{background:var(--bg3)}.chap-item.selected{border-color:var(--accent);background:rgba(217,119,6,.07)}
 .chap-num{font-size:11px;color:var(--text3);min-width:20px;font-weight:500}
 .chap-title{flex:1;font-size:13px;line-height:1.35}
 .chap-item.selected .chap-title,.chap-item.selected .chap-num{color:var(--accent)}
-.chap-saved{font-size:10px;color:var(--accent2);background:rgba(110,231,183,.12);border-radius:99px;padding:2px 7px;white-space:nowrap}
-/* Tools */
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.tool-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:12px;cursor:pointer;transition:all .15s;text-align:left;position:relative}
-.tool-card:active{transform:scale(.97)}.tool-card.sel{border-color:var(--accent);background:rgba(110,231,183,.07)}
-.tool-card svg{width:20px;height:20px;stroke:var(--text3);margin-bottom:7px;stroke-width:1.5;display:block}
-.tool-card.sel svg{stroke:var(--accent)}
-.tool-name{font-size:13px;font-weight:500;color:var(--text)}.tool-card.sel .tool-name{color:var(--accent)}
-.tool-desc{font-size:11px;color:var(--text3);margin-top:2px}
-.tool-saved-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent2)}
+.chap-prog{font-size:10px;color:var(--accent2);background:rgba(217,119,6,.12);border-radius:99px;padding:2px 7px;white-space:nowrap}
 /* Buttons */
-.gen-btn{width:100%;padding:14px;font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;background:var(--accent);color:#0f172a;border:none;border-radius:var(--rsm);cursor:pointer;transition:all .15s}
-.gen-btn:active{transform:scale(.98)}.gen-btn:disabled{opacity:.4}
+.btn-primary{width:100%;padding:14px;font-size:14px;font-weight:500;font-family:'Source Sans 3',sans-serif;background:var(--accent);color:#fff;border:none;border-radius:var(--rsm);cursor:pointer;transition:all .15s}
+.btn-primary:active{transform:scale(.98)}.btn-primary:disabled{opacity:.4}
 .btn-row{display:flex;gap:8px;margin-top:10px}
-.btn-sec{flex:1;padding:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:transparent;border:1px solid var(--border2);color:var(--text2);border-radius:var(--rsm);cursor:pointer}
+.btn-sec{flex:1;padding:10px;font-size:13px;font-family:'Source Sans 3',sans-serif;background:transparent;border:1px solid var(--border2);color:var(--text2);border-radius:var(--rsm);cursor:pointer}
 .btn-sec:active{background:var(--bg3)}
-.btn-acc{flex:1;padding:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:rgba(110,231,183,.15);border:1px solid rgba(110,231,183,.3);color:var(--accent);border-radius:var(--rsm);cursor:pointer}
-.btn-acc:active{background:rgba(110,231,183,.25)}
-.btn-red{flex:1;padding:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5;border-radius:var(--rsm);cursor:pointer}
+.btn-acc{flex:1;padding:10px;font-size:13px;font-family:'Source Sans 3',sans-serif;background:rgba(217,119,6,.12);border:1px solid rgba(217,119,6,.35);color:var(--accent2);border-radius:var(--rsm);cursor:pointer}
+.btn-acc:active{background:rgba(217,119,6,.2)}
+.btn-green{flex:1;padding:10px;font-size:13px;font-family:'Source Sans 3',sans-serif;background:var(--green-bg);border:1px solid rgba(59,109,17,.3);color:var(--green);border-radius:var(--rsm);cursor:pointer}
+.btn-red{flex:1;padding:10px;font-size:13px;font-family:'Source Sans 3',sans-serif;background:var(--red-bg);border:1px solid rgba(192,57,43,.3);color:var(--red);border-radius:var(--rsm);cursor:pointer}
+.btn-blue{flex:1;padding:10px;font-size:13px;font-family:'Source Sans 3',sans-serif;background:var(--blue-bg);border:1px solid rgba(24,95,165,.3);color:var(--blue);border-radius:var(--rsm);cursor:pointer}
 /* Count control */
 .count-ctrl{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:10px 14px;margin-bottom:11px}
-.count-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;width:30px;height:30px;color:var(--text);font-size:18px;cursor:pointer;line-height:1;font-family:'DM Sans',sans-serif}
-/* Output */
+.count-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;width:30px;height:30px;color:var(--text);font-size:18px;cursor:pointer;line-height:1;font-family:'Source Sans 3',sans-serif}
+/* Output header */
 .out-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border)}
-.out-title{display:flex;align-items:center;gap:8px;font-family:'Lora',serif;font-size:15px}
-.out-title svg{width:18px;height:18px;stroke:var(--accent);stroke-width:1.5;flex-shrink:0}
-.save-indicator{font-size:11px;color:var(--accent2);background:rgba(110,231,183,.12);border-radius:99px;padding:3px 9px}
-.prose{font-size:14px;line-height:1.8;color:var(--text2);white-space:pre-wrap}
-/* Flashcards - spaced repetition mode */
-.fc-sr{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center;min-height:180px;display:flex;flex-direction:column;justify-content:center;margin-bottom:12px;cursor:pointer;transition:all .2s}
-.fc-sr:active{transform:scale(.98)}
-.fc-sr .fc-front{font-size:16px;font-weight:500;color:var(--text);line-height:1.4}
-.fc-sr .fc-back{font-size:14px;color:var(--accent);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:none}
-.fc-sr.revealed .fc-back{display:block}
-.fc-sr .fc-hint{font-size:12px;color:var(--text3);margin-top:10px}
-.fc-sr.revealed .fc-hint{display:none}
-.fc-sr-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.fc-sr-btns button{padding:12px;font-size:13px;font-family:'DM Sans',sans-serif;border-radius:var(--rsm);cursor:pointer;font-weight:500}
-.fc-btn-no{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#fca5a5}
-.fc-btn-yes{background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.3);color:var(--accent)}
+.out-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--text)}
+.save-indicator{font-size:11px;color:var(--accent2);background:rgba(217,119,6,.12);border-radius:99px;padding:3px 9px}
+/* Prose */
+.prose{font-size:14px;line-height:1.9;color:var(--text2);white-space:pre-wrap;font-family:'Source Sans 3',sans-serif}
+/* Phase intro card */
+.phase-intro{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;text-align:center}
+.phase-intro-icon{font-size:36px;margin-bottom:10px}
+.phase-intro-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--text);margin-bottom:8px}
+.phase-intro-desc{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.phase-tip{background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.2);border-radius:var(--rsm);padding:10px 13px;font-size:12px;color:var(--text2);line-height:1.5;text-align:left;margin-bottom:16px}
+/* Flashcards SR */
+.fc-sr{background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--r);padding:20px;text-align:center;min-height:180px;display:flex;flex-direction:column;justify-content:center;margin-bottom:12px;transition:all .2s}
+.fc-front{font-size:16px;font-weight:500;color:var(--text);line-height:1.4;font-family:'Playfair Display',serif;margin-bottom:14px}
+.fc-input{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--rsm);color:var(--text);font-size:14px;font-family:'Source Sans 3',sans-serif;resize:none;min-height:70px;margin-bottom:10px}
+.fc-input::placeholder{color:var(--text3)}
+.fc-reveal-btn{width:100%;padding:10px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rsm);font-size:13px;color:var(--text2);cursor:pointer;font-family:'Source Sans 3',sans-serif;margin-bottom:10px}
+.fc-back{font-size:14px;color:var(--accent2);line-height:1.6;padding:12px;background:rgba(217,119,6,.07);border-radius:var(--rsm);margin-bottom:10px;text-align:left;display:none}
 .fc-progress{font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px}
-/* Classic fc (saved view) */
+.fc-sr-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+/* Classic fc */
 .fc{background:var(--bg3);border-radius:var(--rsm);padding:14px;margin-bottom:9px;cursor:pointer;border:1px solid var(--border);transition:all .2s}
 .fc:active{transform:scale(.98)}
-.fc .front{font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px}
+.fc .front{font-size:14px;font-weight:500;color:var(--text);margin-bottom:3px;font-family:'Playfair Display',serif}
 .fc .hint{font-size:11px;color:var(--text3)}
-.fc .back{font-size:13px;color:var(--accent);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none;line-height:1.6}
-.fc.flip{border-color:var(--accent);background:rgba(110,231,183,.06)}.fc.flip .back{display:block}.fc.flip .hint{display:none}
+.fc .back{font-size:13px;color:var(--accent2);margin-top:10px;padding-top:10px;border-top:1px solid var(--border2);display:none;line-height:1.6}
+.fc.flip{border-color:var(--accent);background:rgba(217,119,6,.06)}.fc.flip .back{display:block}.fc.flip .hint{display:none}
 /* Quiz */
 .quiz-prog{font-size:12px;color:var(--text3);margin-bottom:13px}
-.quiz-q{font-family:'Lora',serif;font-size:15px;line-height:1.5;margin-bottom:12px}
-.quiz-opt{width:100%;text-align:left;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);cursor:pointer;transition:all .15s}
+.quiz-q{font-family:'Playfair Display',serif;font-size:15px;line-height:1.5;margin-bottom:12px}
+.quiz-opt{width:100%;text-align:left;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;font-size:13px;font-family:'Source Sans 3',sans-serif;color:var(--text);cursor:pointer;transition:all .15s}
 .quiz-opt:active:not(:disabled){transform:scale(.98)}
-.quiz-opt.correct{background:rgba(52,211,153,.15);border-color:var(--accent);color:var(--accent)}
-.quiz-opt.wrong{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.5);color:#fca5a5}
+.quiz-opt.correct{background:var(--green-bg);border-color:rgba(59,109,17,.4);color:var(--green)}
+.quiz-opt.wrong{background:var(--red-bg);border-color:rgba(192,57,43,.4);color:var(--red)}
 .quiz-nav{display:flex;gap:8px;margin-top:14px}
-.quiz-nav button{flex:1;padding:11px;border:1px solid var(--border2);background:transparent;color:var(--text);border-radius:var(--rsm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
+.quiz-nav button{flex:1;padding:11px;border:1px solid var(--border2);background:transparent;color:var(--text);border-radius:var(--rsm);font-family:'Source Sans 3',sans-serif;font-size:13px;cursor:pointer}
 .quiz-nav button:active{background:var(--bg3)}
-/* Quiz result */
 .quiz-result{text-align:center;padding:20px 0}
-.quiz-score{font-size:48px;font-weight:600;font-family:'Lora',serif;color:var(--accent);margin-bottom:4px}
+.quiz-score{font-size:48px;font-weight:600;font-family:'Playfair Display',serif;margin-bottom:4px}
 .quiz-score-sub{font-size:13px;color:var(--text3);margin-bottom:20px}
+/* Explain feedback */
+.explain-area{width:100%;padding:12px;background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--rsm);color:var(--text);font-size:14px;font-family:'Source Sans 3',sans-serif;resize:none;min-height:120px;line-height:1.7}
+.explain-area::placeholder{color:var(--text3)}
+.feedback-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:14px;margin-top:12px}
+.feedback-score{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.feedback-pips{display:flex;gap:4px}
+.pip{width:20px;height:8px;border-radius:99px;background:var(--bg3)}
+.pip.filled{background:var(--accent)}
 /* Terms */
-.term{padding:11px 13px;background:var(--bg3);border-radius:var(--rsm);margin-bottom:7px;border-left:3px solid var(--accent)}
-.term-name{font-size:14px;font-weight:500;color:var(--accent);margin-bottom:3px}
+.term{padding:11px 13px;background:var(--bg2);border-radius:var(--rsm);margin-bottom:7px;border-left:3px solid var(--accent);border:1px solid var(--border);border-left:3px solid var(--accent)}
+.term-name{font-size:14px;font-weight:500;color:var(--accent2);margin-bottom:3px}
 .term-def{font-size:13px;color:var(--text2);line-height:1.5}
 /* Timeline */
 .tl-item{display:flex;gap:12px;margin-bottom:14px}
-.tl-dot-col{display:flex;flex-direction:column;align-items:center;gap:0}
-.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:3px}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:3px;border:2px solid var(--bg)}
 .tl-line{width:2px;flex:1;background:var(--border2);margin-top:4px}
-.tl-date{font-size:11px;color:var(--accent);font-weight:500;margin-bottom:2px}
+.tl-date{font-size:11px;color:var(--accent2);font-weight:500;margin-bottom:2px}
 .tl-event{font-size:13px;color:var(--text2);line-height:1.5}
-/* Saved view */
+/* Saved */
 .saved-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:7px;overflow:hidden}
 .saved-entry-hdr{display:flex;align-items:center;gap:10px;padding:11px 13px;cursor:pointer}
 .saved-entry-hdr:active{background:var(--bg3)}
 .saved-type-badge{font-size:10px;padding:2px 8px;border-radius:99px;white-space:nowrap}
-.badge-summary{background:rgba(96,165,250,.15);color:#93c5fd}
-.badge-flashcards{background:rgba(251,191,36,.1);color:#fcd34d}
-.badge-quiz{background:rgba(167,139,250,.15);color:#c4b5fd}
-.badge-terms{background:rgba(110,231,183,.1);color:var(--accent)}
-.badge-questions{background:rgba(248,113,113,.1);color:#fca5a5}
-.badge-simple{background:rgba(251,191,36,.12);color:#fcd34d}
-.badge-timeline{background:rgba(96,165,250,.12);color:#93c5fd}
+.badge-preQuiz{background:rgba(24,95,165,.1);color:#185FA5}
+.badge-summary{background:rgba(217,119,6,.1);color:#b45309}
+.badge-flashcards{background:rgba(59,109,17,.1);color:#3b6d11}
+.badge-quiz{background:rgba(139,90,43,.1);color:#6b4c2a}
+.badge-explain{background:rgba(192,57,43,.08);color:#c0392b}
+.badge-simple{background:rgba(217,119,6,.1);color:#b45309}
+.badge-terms{background:rgba(217,119,6,.1);color:#b45309}
+.badge-timeline{background:rgba(24,95,165,.1);color:#185FA5}
+.badge-questions{background:rgba(192,57,43,.08);color:#c0392b}
 .saved-entry-title{flex:1;font-size:13px;color:var(--text2);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .saved-entry-body{padding:0 13px 13px;border-top:1px solid var(--border);display:none}
 .saved-entry-body.open{display:block;padding-top:12px}
 .saved-del{background:none;border:none;color:var(--text3);font-size:15px;cursor:pointer;padding:4px}
 /* Settings */
 .setting-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:7px}
-.setting-input{width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rsm);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif}
+.setting-input{width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rsm);color:var(--text);font-size:14px;font-family:'Source Sans 3',sans-serif}
 .setting-input::placeholder{color:var(--text3)}
-.key-ok{color:var(--accent)}.key-err{color:var(--red)}
-/* Loading/error */
+.key-ok{color:var(--green)}.key-err{color:var(--red)}
+/* Loading / error */
 .loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 0;gap:14px}
 .dots{display:flex;gap:7px}
-.dots span{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pu 1.2s ease-in-out infinite}
+.dots span{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pu 1.2s ease-in-out infinite}
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
 @keyframes pu{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
 .loading-txt{font-size:13px;color:var(--text3)}
-.err-box{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:var(--rsm);padding:13px;font-size:13px;color:#fca5a5;line-height:1.5}
+.err-box{background:var(--red-bg);border:1px solid rgba(192,57,43,.25);border-radius:var(--rsm);padding:13px;font-size:13px;color:var(--red);line-height:1.5}
 .empty-state{text-align:center;padding:50px 20px}
 .empty-state svg{width:44px;height:44px;stroke:var(--text3);margin-bottom:14px;stroke-width:1}
-.empty-state h3{font-family:'Lora',serif;font-size:17px;color:var(--text2);margin-bottom:7px}
+.empty-state h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--text2);margin-bottom:7px}
 .empty-state p{font-size:13px;color:var(--text3);line-height:1.6}
-.install-tip{background:rgba(110,231,183,.07);border:1px solid rgba(110,231,183,.18);border-radius:var(--rsm);padding:11px 13px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.5;display:flex;gap:9px;align-items:flex-start}
+.install-tip{background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.2);border-radius:var(--rsm);padding:11px 13px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.5;display:flex;gap:9px;align-items:flex-start}
 .install-tip svg{width:16px;height:16px;stroke:var(--accent);flex-shrink:0;margin-top:1px}
+.tool-saved-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--green)}
 </style>
 </head>
 <body>
@@ -178,46 +207,37 @@ body{display:flex;flex-direction:column}
 <script>
 // ─── State ────────────────────────────────────────────
 let books=[], activeBookId=null, activeChapIdx=null;
-let currentTool='summary', currentView='library';
+let currentView='library', currentPhase=0;
 let saved={}, pendingEntry=null;
-let countSetting={quiz:6,flashcards:10};
+let countSetting={quiz:6,flashcards:8};
 let savedViewBook=null, savedViewChap=null;
-// flashcard SR state
-let fcCards=[], fcIdx=0, fcAgain=[], fcDone=0, fcTotal=0;
+let fcCards=[], fcIdx=0, fcAgain=[];
 
-const COLORS=[['#6ee7b7','#059669'],['#60a5fa','#1d4ed8'],['#f472b6','#be185d'],['#fbbf24','#b45309'],['#a78bfa','#6d28d9'],['#f87171','#b91c1c']];
-let colorIdx=0;
-
-const TOOLS=[
-  {id:'summary',   name:'Zusammenfassung', desc:'Überblick & Kernaussagen',        badge:'badge-summary',
-   icon:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'},
-  {id:'simple',    name:'Einfache Sprache',desc:'Für Einsteiger erklärt',           badge:'badge-simple',
-   icon:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'},
-  {id:'flashcards',name:'Karteikarten',    desc:'Mit Lernfortschritt',             badge:'badge-flashcards',
-   icon:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>'},
-  {id:'quiz',      name:'Quiz',            desc:'Multiple Choice + Auswertung',    badge:'badge-quiz',
-   icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>'},
-  {id:'terms',     name:'Kernbegriffe',    desc:'Wichtige Konzepte',               badge:'badge-terms',
-   icon:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>'},
-  {id:'timeline',  name:'Zeitstrahl',      desc:'Daten & Ereignisse',              badge:'badge-timeline',
-   icon:'<line x1="12" y1="2" x2="12" y2="22"/><polyline points="17 7 12 2 7 7"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="14" x2="21" y2="14"/>'},
-  {id:'questions', name:'Reflexion',       desc:'Fragen zum Nachdenken',           badge:'badge-questions',
-   icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'},
+// Learning path phases
+const PHASES=[
+  {id:'preQuiz',   emoji:'🔍', label:'Vorwissen',   desc:'Was weißt du schon?'},
+  {id:'summary',   emoji:'📖', label:'Lesen',        desc:'Zusammenfassung & Konzepte'},
+  {id:'flashcards',emoji:'🃏', label:'Karten',       desc:'Aktives Erinnern'},
+  {id:'quiz',      emoji:'❓', label:'Quiz',         desc:'Wissen testen'},
+  {id:'explain',   emoji:'✍️', label:'Erklären',    desc:'In eigenen Worten'},
 ];
 
+const COLORS=[
+  ['#b45309','#92400e'],['#185FA5','#0c447c'],['#be185d','#9d174d'],
+  ['#3b6d11','#27500a'],['#6d28d9','#4c1d95'],['#c0392b','#922b21'],
+];
+let colorIdx=0;
+
 function S(k,v){if(v===undefined){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}else{localStorage.setItem(k,JSON.stringify(v))}}
-function loadState(){
-  saved=S('lb_saved')||{};colorIdx=S('lb_colorIdx')||0;
-  activeBookId=S('lb_activeBook')||null;
-}
+function loadState(){saved=S('lb_saved')||{};colorIdx=S('lb_colorIdx')||0;activeBookId=S('lb_activeBook')||null;}
 function saveState(){
-  const booksLight=books.map(b=>({...b,chapters:b.chapters.map(c=>({title:c.title,words:c.words}))}));
-  S('lb_books_meta',booksLight);S('lb_activeBook',activeBookId);S('lb_saved',saved);S('lb_colorIdx',colorIdx);
+  const bm=books.map(b=>({...b,chapters:b.chapters.map(c=>({title:c.title,words:c.words}))}));
+  S('lb_books_meta',bm);S('lb_activeBook',activeBookId);S('lb_saved',saved);S('lb_colorIdx',colorIdx);
   books.forEach(b=>{try{S('lb_text_'+b.id,b.chapters.map(c=>c.text))}catch(e){}});
 }
 function loadFullBooks(){
   const meta=S('lb_books_meta')||[];
-  books=meta.map(b=>{const texts=S('lb_text_'+b.id)||[];return{...b,chapters:b.chapters.map((c,i)=>({...c,text:texts[i]||''}))};});
+  books=meta.map(b=>{const t=S('lb_text_'+b.id)||[];return{...b,chapters:b.chapters.map((c,i)=>({...c,text:t[i]||''}))};});
   if(activeBookId&&!books.find(b=>b.id===activeBookId))activeBookId=books[0]?.id||null;
 }
 
@@ -225,7 +245,6 @@ function loadFullBooks(){
 function nav(view){
   currentView=view;
   if(view==='saved'){savedViewBook=null;savedViewChap=null;}
-  if(view==='learn'){pendingEntry=null;}
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nb-'+view).classList.add('active');
   render();
@@ -238,30 +257,27 @@ function render(){
 }
 
 // ─── Progress helpers ─────────────────────────────────
-function chapProgress(bookId,chapIdx){
-  const total=TOOLS.length;
-  const pfx=bookId+'_'+chapIdx+'_';
-  const done=TOOLS.filter(t=>{
-    if(t.id==='quiz'||t.id==='flashcards') return Object.keys(saved).some(k=>k.startsWith(pfx+t.id+'_')||k===pfx+t.id);
-    return !!saved[pfx+t.id];
+function chapDonePhases(bookId,chapIdx){
+  return PHASES.filter(p=>{
+    const pfx=bookId+'_'+chapIdx+'_'+p.id;
+    if(p.id==='quiz'||p.id==='flashcards')return Object.keys(saved).some(k=>k.startsWith(pfx+'_')||k===pfx);
+    return !!saved[pfx];
   }).length;
-  return Math.round((done/total)*100);
 }
-function bookProgress(bookId){
-  const book=books.find(b=>b.id===bookId);
-  if(!book||!book.chapters.length)return 0;
-  const avg=book.chapters.reduce((s,_,i)=>s+chapProgress(bookId,i),0)/book.chapters.length;
-  return Math.round(avg);
+function chapPct(bookId,chapIdx){return Math.round((chapDonePhases(bookId,chapIdx)/PHASES.length)*100);}
+function bookPct(bookId){
+  const b=books.find(x=>x.id===bookId);if(!b||!b.chapters.length)return 0;
+  return Math.round(b.chapters.reduce((s,_,i)=>s+chapPct(bookId,i),0)/b.chapters.length);
 }
 
 // ─── Library ──────────────────────────────────────────
 function renderLibrary(){
   const s=document.getElementById('screen');
-  const activeBook=books.find(b=>b.id===activeBookId);
-  let booksHtml=books.map(b=>{
-    const [c1,c2]=b.color;const pct=bookProgress(b.id);
+  const ab=books.find(b=>b.id===activeBookId);
+  const booksHtml=books.map(b=>{
+    const pct=bookPct(b.id);
     return `<div class="book-row ${b.id===activeBookId?'active-book':''}" onclick="selectBook('${b.id}')">
-      <div class="book-spine" style="background:linear-gradient(135deg,${c1},${c2})">
+      <div class="book-spine" style="background:linear-gradient(135deg,${b.color[0]},${b.color[1]})">
         <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       </div>
       <div class="book-row-info">
@@ -274,18 +290,18 @@ function renderLibrary(){
   }).join('');
 
   let chapHtml='';
-  if(activeBook){
-    chapHtml=`<div class="sec-title">Kapitel — ${esc(activeBook.title)}</div>`+
-      activeBook.chapters.map((c,i)=>{
-        const pct=chapProgress(activeBookId,i);
-        const hasSaved=Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+i+'_'));
+  if(ab){
+    chapHtml=`<div class="sec-title">Kapitel — ${esc(ab.title)}</div>`+
+      ab.chapters.map((c,i)=>{
+        const pct=chapPct(activeBookId,i);const done=chapDonePhases(activeBookId,i);
         return `<div class="chap-item ${activeChapIdx===i?'selected':''}" onclick="selectChap(${i})">
           <span class="chap-num">${i+1}</span>
           <span class="chap-title">${esc(c.title)}</span>
-          ${hasSaved?`<span class="chap-saved">${pct}%</span>`:''}
+          ${done>0?`<span class="chap-prog">${pct}%</span>`:''}
         </div>`;
       }).join('');
   }
+
   s.innerHTML=`
     <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
     ${isIOS()?`<div class="install-tip"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Teilen → „Zum Home-Bildschirm" für App-Installation</div>`:''}
@@ -299,296 +315,418 @@ function renderLibrary(){
 
 function selectBook(id){activeBookId=id;activeChapIdx=null;saveState();renderLibrary();}
 function deleteBook(e,id){
-  e.stopPropagation();
-  if(!confirm('Buch und alle gespeicherten Inhalte entfernen?'))return;
+  e.stopPropagation();if(!confirm('Buch und alle gespeicherten Inhalte entfernen?'))return;
   Object.keys(saved).forEach(k=>{if(k.startsWith(id+'_'))delete saved[k];});
   try{localStorage.removeItem('lb_text_'+id);}catch(e){}
   books=books.filter(b=>b.id!==id);
   if(activeBookId===id){activeBookId=books[0]?.id||null;activeChapIdx=null;}
   saveState();renderLibrary();
 }
-function selectChap(i){activeChapIdx=i;saveState();nav('learn');}
+function selectChap(i){activeChapIdx=i;currentPhase=0;saveState();nav('learn');}
 
-// ─── Learn ────────────────────────────────────────────
+// ─── Learn: path view ─────────────────────────────────
 function renderLearn(){
   const s=document.getElementById('screen');
   const book=books.find(b=>b.id===activeBookId);
   if(!book){s.innerHTML=emptyState('Kein Buch geladen','Gehe zu Bücher und lade ein ePub.');return;}
   if(activeChapIdx===null){s.innerHTML=emptyState('Kein Kapitel gewählt','Wähle unter Bücher ein Kapitel aus.');return;}
   const ch=book.chapters[activeChapIdx];
-  const pct=chapProgress(activeBookId,activeChapIdx);
+  const pct=chapPct(activeBookId,activeChapIdx);
 
-  const toolGrid=TOOLS.map(t=>{
-    const hasSaved=(t.id==='quiz'||t.id==='flashcards')
-      ?Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+activeChapIdx+'_'+t.id+'_'))
-      :!!saved[activeBookId+'_'+activeChapIdx+'_'+t.id];
-    return `<button class="tool-card ${currentTool===t.id?'sel':''}" onclick="selTool('${t.id}')">
-      ${hasSaved?'<div class="tool-saved-dot"></div>':''}
-      <svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round">${t.icon}</svg>
-      <div class="tool-name">${t.name}</div>
-      <div class="tool-desc">${t.desc}</div>
-    </button>`;
+  const pathHtml=PHASES.map((p,i)=>{
+    const done=!!saved[activeBookId+'_'+activeChapIdx+'_'+p.id]||
+      Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+activeChapIdx+'_'+p.id+'_'));
+    const isActive=i===currentPhase;
+    const isLocked=i>0&&!PHASES.slice(0,i).some((_,j)=>
+      saved[activeBookId+'_'+activeChapIdx+'_'+PHASES[j].id]||
+      Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+activeChapIdx+'_'+PHASES[j].id+'_'))
+    )&&i>chapDonePhases(activeBookId,activeChapIdx);
+    return `<div class="path-step ${done?'done':isActive?'active':''}" onclick="setPhase(${i})">
+      ${done?'<span class="path-check">✓</span>':''}
+      <span class="path-step-icon">${p.emoji}</span>
+      <div class="path-step-label">${p.label}</div>
+    </div>`;
   }).join('');
 
-  const countCtrl=(currentTool==='quiz'||currentTool==='flashcards')?`
-    <div class="count-ctrl">
-      <span style="font-size:13px;color:var(--text2);flex:1">${currentTool==='quiz'?'Anzahl Fragen':'Anzahl Karten'}</span>
-      <button class="count-btn" onclick="changeCount(-1)">−</button>
-      <span id="countDisp" style="font-size:16px;font-weight:500;min-width:28px;text-align:center">${currentTool==='quiz'?countSetting.quiz:countSetting.flashcards}</span>
-      <button class="count-btn" onclick="changeCount(1)">+</button>
-    </div>`:'' ;
-
   s.innerHTML=`
-    <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
+    <div class="app-header"><div class="logo">Learn<span>Book</span></div><button class="hdr-btn" onclick="activeChapIdx=null;nav('library')">← Kapitel</button></div>
     <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
       <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${esc(book.title)} · Kapitel ${activeChapIdx+1}</div>
-      <div style="font-size:14px;font-weight:500;margin-bottom:6px">${esc(ch.title)}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:4px">${pct}% dieses Kapitels gelernt</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:5px">${esc(ch.title)}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px">${pct}% abgeschlossen</div>
       <div class="prog-bar-wrap"><div class="prog-bar-fill" style="width:${pct}%"></div></div>
     </div>
-    <div class="sec-title">Lernmodus</div>
-    <div class="tool-grid">${toolGrid}</div>
-    ${countCtrl}
-    <button class="gen-btn" id="genBtn" onclick="generate()">✦ Generieren</button>
-    <div id="outputArea" style="margin-top:14px"></div>`;
+    <div class="path-wrap">${pathHtml}</div>
+    <div id="phaseArea"></div>`;
+
+  renderPhase();
 }
 
-function selTool(id){currentTool=id;pendingEntry=null;renderLearn();}
-function changeCount(d){
-  const k=currentTool==='quiz'?'quiz':'flashcards';
-  const min=currentTool==='quiz'?3:5,max=currentTool==='quiz'?20:30;
-  countSetting[k]=Math.min(max,Math.max(min,countSetting[k]+d));
-  const el=document.getElementById('countDisp');if(el)el.textContent=countSetting[k];
+function setPhase(i){currentPhase=i;renderLearn();}
+
+function renderPhase(){
+  const p=PHASES[currentPhase];
+  if(p.id==='preQuiz') renderPhasePreQuiz();
+  else if(p.id==='summary') renderPhaseSummary();
+  else if(p.id==='flashcards') renderPhaseFlashcards();
+  else if(p.id==='quiz') renderPhaseQuiz();
+  else if(p.id==='explain') renderPhaseExplain();
 }
 
-function savedKey(tool){
-  if(tool==='quiz'||tool==='flashcards')return null;
-  return activeBookId+'_'+activeChapIdx+'_'+tool;
-}
-function newSavedKey(tool){
-  if(tool==='quiz'||tool==='flashcards')return activeBookId+'_'+activeChapIdx+'_'+tool+'_'+Date.now();
-  return activeBookId+'_'+activeChapIdx+'_'+tool;
+// ─── Phase 1: Pre-Quiz ────────────────────────────────
+function renderPhasePreQuiz(){
+  const area=document.getElementById('phaseArea');
+  const key=activeBookId+'_'+activeChapIdx+'_preQuiz';
+  if(saved[key]){
+    renderSavedPhase('preQuiz',saved[key]);return;
+  }
+  area.innerHTML=`
+    <div class="phase-intro">
+      <div class="phase-intro-icon">🔍</div>
+      <div class="phase-intro-title">Was weißt du schon?</div>
+      <div class="phase-intro-desc">Bevor du das Kapitel liest, testen wir dein Vorwissen. Falsche Antworten jetzt sind kein Problem – sie helfen dir später besser zu lernen.</div>
+      <div class="phase-tip">💡 <strong>Warum zuerst?</strong> Vorab-Tests aktivieren dein Gehirn und machen es empfänglicher für neue Informationen. Selbst wenn du alles falsch beantwortest, behältst du den Stoff danach besser.</div>
+      <button class="btn-primary" onclick="generatePhase('preQuiz')">Vorwissens-Quiz starten</button>
+    </div>`;
 }
 
-// ─── Generate ─────────────────────────────────────────
-async function generate(){
+// ─── Phase 2: Summary ─────────────────────────────────
+function renderPhaseSummary(){
+  const area=document.getElementById('phaseArea');
+  const key=activeBookId+'_'+activeChapIdx+'_summary';
+  if(saved[key]){renderSavedPhase('summary',saved[key]);return;}
+  area.innerHTML=`
+    <div class="phase-intro">
+      <div class="phase-intro-icon">📖</div>
+      <div class="phase-intro-title">Jetzt lesen & verstehen</div>
+      <div class="phase-intro-desc">Claude erstellt eine strukturierte Zusammenfassung mit Elaborationsfragen – Fragen die dich zum Nachdenken über Zusammenhänge bringen.</div>
+      <div class="phase-tip">💡 Lies aktiv: Frage dich bei jedem Abschnitt „Warum ist das so?" und „Was wäre wenn nicht?"</div>
+      <button class="btn-primary" onclick="generatePhase('summary')">Zusammenfassung generieren</button>
+    </div>`;
+}
+
+// ─── Phase 3: Flashcards ──────────────────────────────
+function renderPhaseFlashcards(){
+  const area=document.getElementById('phaseArea');
+  const pfx=activeBookId+'_'+activeChapIdx+'_flashcards';
+  const existing=Object.keys(saved).filter(k=>k.startsWith(pfx+'_')||k===pfx);
+  if(existing.length>0&&saved[existing[0]]?.parsed){
+    // show SR mode with existing cards
+    startFlashcardSR(area,saved[existing[0]].parsed);return;
+  }
+  const n=countSetting.flashcards;
+  area.innerHTML=`
+    <div class="phase-intro">
+      <div class="phase-intro-icon">🃏</div>
+      <div class="phase-intro-title">Aktives Erinnern</div>
+      <div class="phase-intro-desc">Du siehst den Begriff – tippst deine Antwort – dann vergleichst du. Nur was du aktiv abrufst, wandert ins Langzeitgedächtnis.</div>
+      <div class="phase-tip">💡 Schreib deine Antwort auf, bevor du aufdeckst – auch wenn du unsicher bist. Das Abrufen selbst ist der Lerneffekt.</div>
+      <div class="count-ctrl">
+        <span style="font-size:13px;color:var(--text2);flex:1">Anzahl Karten</span>
+        <button class="count-btn" onclick="changeCount('flashcards',-1)">−</button>
+        <span id="fcCount" style="font-size:16px;font-weight:500;min-width:28px;text-align:center">${n}</span>
+        <button class="count-btn" onclick="changeCount('flashcards',1)">+</button>
+      </div>
+      <button class="btn-primary" onclick="generatePhase('flashcards')">Karteikarten generieren</button>
+    </div>`;
+}
+
+// ─── Phase 4: Quiz ────────────────────────────────────
+function renderPhaseQuiz(){
+  const area=document.getElementById('phaseArea');
+  const pfx=activeBookId+'_'+activeChapIdx+'_quiz';
+  const existing=Object.keys(saved).filter(k=>k.startsWith(pfx+'_')||k===pfx);
+  if(existing.length>0){
+    renderSavedPhase('quiz',saved[existing[0]]);return;
+  }
+  const n=countSetting.quiz;
+  area.innerHTML=`
+    <div class="phase-intro">
+      <div class="phase-intro-icon">❓</div>
+      <div class="phase-intro-title">Wissen testen</div>
+      <div class="phase-intro-desc">Multiple-Choice mit Auswertung. Falsch beantwortete Fragen kannst du direkt wiederholen.</div>
+      <div class="phase-tip">💡 Claude verknüpft die Fragen mit Themen aus anderen Kapiteln – so entsteht ein Gesamtbild.</div>
+      <div class="count-ctrl">
+        <span style="font-size:13px;color:var(--text2);flex:1">Anzahl Fragen</span>
+        <button class="count-btn" onclick="changeCount('quiz',-1)">−</button>
+        <span id="qCount" style="font-size:16px;font-weight:500;min-width:28px;text-align:center">${n}</span>
+        <button class="count-btn" onclick="changeCount('quiz',1)">+</button>
+      </div>
+      <button class="btn-primary" onclick="generatePhase('quiz')">Quiz generieren</button>
+    </div>`;
+}
+
+// ─── Phase 5: Explain ─────────────────────────────────
+function renderPhaseExplain(){
+  const area=document.getElementById('phaseArea');
+  const key=activeBookId+'_'+activeChapIdx+'_explain';
+  if(saved[key]){renderSavedPhase('explain',saved[key]);return;}
+  area.innerHTML=`
+    <div class="phase-intro" style="text-align:left">
+      <div style="text-align:center"><div class="phase-intro-icon">✍️</div>
+      <div class="phase-intro-title">Erkläre es in eigenen Worten</div></div>
+      <div class="phase-intro-desc" style="text-align:center">Schreibe eine kurze Erklärung des Kapitels – als würdest du es jemandem erklären der es nicht kennt. Claude gibt dir danach ehrliches Feedback.</div>
+      <div class="phase-tip">💡 <strong>Der Feynman-Effekt:</strong> Wenn du etwas erklären kannst, hast du es wirklich verstanden. Lücken in deiner Erklärung zeigen genau was du nochmal lesen solltest.</div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Schreibe deine Erklärung hier:</div>
+      <textarea class="explain-area" id="explainText" placeholder="Das Kapitel handelt von… Der wichtigste Punkt ist… Der Zusammenhang zu… ist…"></textarea>
+      <div class="btn-row" style="margin-top:10px">
+        <button class="btn-primary" onclick="submitExplain()" style="flex:1">Feedback von Claude holen</button>
+      </div>
+    </div>`;
+}
+
+async function submitExplain(){
+  const text=document.getElementById('explainText')?.value?.trim();
+  if(!text||text.length<30){alert('Bitte schreibe mindestens ein paar Sätze.');return;}
+  const key=localStorage.getItem('lb_apikey');
+  if(!key){alert('API-Key fehlt.');nav('settings');return;}
+  const ch=books.find(b=>b.id===activeBookId).chapters[activeChapIdx];
+  const chText=ch.text.length>6000?ch.text.slice(0,6000)+'…':ch.text;
+
+  const area=document.getElementById('phaseArea');
+  area.innerHTML=`<div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">Claude liest deine Erklärung…</div></div>`;
+
+  try{
+    const resp=await callAPI(key,`Du bist ein wohlwollender aber ehrlicher Lerncoach. Ein Lernender hat folgendes Kapitel gelesen und erklärt es jetzt in eigenen Worten.
+
+Kapitel: "${ch.title}"
+Kapitelinhalt: ${chText}
+
+Erklärung des Lernenden:
+"${text}"
+
+Gib strukturiertes Feedback auf Deutsch:
+1. SCORE: Bewerte das Verständnis von 1-5 (5=vollständig)
+2. STÄRKEN: Was hat der Lernende gut erfasst? (2-3 Punkte)
+3. LÜCKEN: Was fehlt oder ist ungenau? (konkret und konstruktiv)
+4. VERBINDUNGEN: Welche wichtigen Zusammenhänge wurden nicht erwähnt?
+5. NÄCHSTER SCHRITT: Eine konkrete Empfehlung
+
+Antworte NUR als JSON ohne Backticks:
+{"score":4,"strengths":["...","..."],"gaps":["..."],"connections":"...","next":"..."}`);
+
+    let feedback;
+    try{feedback=JSON.parse(extractJson(resp));}
+    catch(e){feedback=null;}
+
+    const entry={type:'explain',raw:text,feedback,savedAt:new Date().toLocaleDateString('de-DE')};
+    saved[activeBookId+'_'+activeChapIdx+'_explain']=entry;
+    saveState();
+    renderExplainFeedback(area,entry);
+  }catch(e){
+    area.innerHTML=`<div class="err-box">${esc(e.message)}</div>`;
+  }
+}
+
+function renderExplainFeedback(container,entry){
+  const f=entry.feedback;
+  if(!f){container.innerHTML=`<div class="card"><div class="prose">${esc(entry.raw)}</div></div>`;return;}
+  const score=f.score||0;
+  const pips=Array.from({length:5},(_,i)=>`<div class="pip ${i<score?'filled':''}"></div>`).join('');
+  const strengths=(f.strengths||[]).map(s=>`<li style="margin-bottom:4px">${esc(s)}</li>`).join('');
+  const gaps=(f.gaps||[]).map(g=>`<li style="margin-bottom:4px">${esc(g)}</li>`).join('');
+
+  container.innerHTML=`
+    <div class="card" style="margin-bottom:11px">
+      <div style="font-size:13px;color:var(--text3);margin-bottom:6px">Deine Erklärung</div>
+      <div class="prose" style="font-size:13px">${esc(entry.raw)}</div>
+    </div>
+    <div class="card">
+      <div class="feedback-score">
+        <div>
+          <div style="font-size:12px;color:var(--text3)">Verständnis-Score</div>
+          <div class="feedback-pips" style="margin-top:5px">${pips}</div>
+        </div>
+        <div style="font-family:'Playfair Display',serif;font-size:32px;color:var(--accent2);font-weight:600">${score}/5</div>
+      </div>
+      ${strengths?`<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--green);margin-bottom:6px">✓ Das hast du gut erfasst</div><ul style="font-size:13px;color:var(--text2);padding-left:16px;line-height:1.6">${strengths}</ul></div>`:''}
+      ${gaps?`<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--red);margin-bottom:6px">△ Lücken & Ungenauigkeiten</div><ul style="font-size:13px;color:var(--text2);padding-left:16px;line-height:1.6">${gaps}</ul></div>`:''}
+      ${f.connections?`<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:500;color:var(--blue);margin-bottom:6px">↔ Wichtige Verbindungen</div><div style="font-size:13px;color:var(--text2);line-height:1.6">${esc(f.connections)}</div></div>`:''}
+      ${f.next?`<div style="background:rgba(217,119,6,.07);border-radius:var(--rsm);padding:10px 12px"><div style="font-size:12px;font-weight:500;color:var(--accent2);margin-bottom:4px">→ Nächster Schritt</div><div style="font-size:13px;color:var(--text2)">${esc(f.next)}</div></div>`:''}
+    </div>
+    <div class="btn-row">
+      <button class="btn-sec" onclick="renderPhaseExplain()">Nochmal versuchen</button>
+      <button class="btn-acc" onclick="nextPhase()">Weiter →</button>
+    </div>`;
+}
+
+function nextPhase(){
+  if(currentPhase<PHASES.length-1){currentPhase++;renderLearn();}
+}
+
+// ─── Generate phases ──────────────────────────────────
+async function generatePhase(phaseId){
   const key=localStorage.getItem('lb_apikey');
   if(!key){alert('API-Key fehlt.');nav('settings');return;}
   const book=books.find(b=>b.id===activeBookId);
   const ch=book.chapters[activeChapIdx];
   const text=ch.text.length>9000?ch.text.slice(0,9000)+'\n[…gekürzt]':ch.text;
-  const n_fc=countSetting.flashcards,n_q=countSetting.quiz;
+  const nfc=countSetting.flashcards,nq=countSetting.quiz;
+
+  // other chapter titles for context
+  const otherChaps=book.chapters.filter((_,i)=>i!==activeChapIdx).slice(0,5).map(c=>c.title).join(', ');
 
   const prompts={
-    summary:`Erstelle eine strukturierte Zusammenfassung auf Deutsch.
-Format:
-ÜBERBLICK
-(2-3 Sätze)
+    preQuiz:`Erstelle exakt 4 Multiple-Choice-Fragen auf Deutsch die das VORWISSEN zu diesem Thema testen – bevor jemand das Kapitel gelesen hat. Fragen sollen allgemeines Wissen oder logisches Denken testen, nicht Details aus dem Kapitel.
+Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
+[{"question":"Frage","options":["A","B","C","D"],"correct":0,"explanation":"Kurze Erklärung der richtigen Antwort"}]
+Kapitel: "${ch.title}"`,
+
+    summary:`Erstelle eine lernoptimierte Zusammenfassung auf Deutsch mit folgender Struktur:
+
+ÜBERBLICK (2-3 Sätze – das Wichtigste zuerst)
 
 KERNAUSSAGEN
 • ...
 
 WICHTIGE PERSONEN / KONZEPTE
-(falls vorhanden)
 
-FAZIT
-(1-2 Sätze)
+WARUM IST DAS WICHTIG?
+(Bedeutung, Konsequenzen, Verbindungen zu anderen Themen)
+
+ELABORATIONSFRAGEN – Denk darüber nach:
+1. Warum war [Ereignis/Konzept] unvermeidlich/überraschend?
+2. Was wäre anders gewesen, wenn...?
+3. Welche Parallelen siehst du zu heute?
 
 Kapitel: "${ch.title}"
 Text: ${text}`,
 
-    simple:`Erkläre den Inhalt dieses Kapitels auf Deutsch so einfach wie möglich – als würdest du es jemandem ohne Vorwissen erklären. Nutze einfache Sprache, kurze Sätze, konkrete Beispiele und Analogien. Strukturiere es in: Worum geht es? – Was sind die wichtigsten Punkte? – Warum ist das wichtig?
-
+    flashcards:`Erstelle exakt ${nfc} Lernkarteikarten auf Deutsch. Fokus auf Konzepte, Zusammenhänge und Kausalitäten – nicht nur Fakten. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
+[{"front":"Frage oder Begriff","back":"Ausführliche Antwort mit Kontext"}]
 Kapitel: "${ch.title}"
 Text: ${text}`,
 
-    flashcards:`Erstelle exakt ${n_fc} Lernkarteikarten auf Deutsch. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
-[{"front":"Begriff oder Frage","back":"Antwort"}]
-Kapitel: "${ch.title}"
-Text: ${text}`,
-
-    quiz:`Erstelle exakt ${n_q} Multiple-Choice-Fragen auf Deutsch. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
-[{"question":"Frage","options":["A","B","C","D"],"correct":0}]
-Kapitel: "${ch.title}"
-Text: ${text}`,
-
-    terms:`Extrahiere 10-15 Kernbegriffe. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
-[{"term":"Begriff","definition":"1-2 Sätze Erklärung"}]
-Kapitel: "${ch.title}"
-Text: ${text}`,
-
-    timeline:`Extrahiere alle konkreten Daten, Jahreszahlen und historischen Ereignisse aus diesem Kapitel und erstelle einen chronologischen Zeitstrahl. Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
-[{"date":"Jahr oder Zeitraum","event":"Kurze Beschreibung des Ereignisses"}]
-Sortiere chronologisch. Nur Einträge mit konkreten Daten/Jahren.
-Kapitel: "${ch.title}"
-Text: ${text}`,
-
-    questions:`Erstelle 6 tiefgehende Reflexionsfragen auf Deutsch als nummerierte Liste.
+    quiz:`Erstelle exakt ${nq} anspruchsvolle Multiple-Choice-Fragen auf Deutsch. Verknüpfe wo möglich mit diesen anderen Kapiteln: ${otherChaps||'keine'}. Fragen sollen Verständnis testen, nicht nur Auswendiglernen.
+Antworte AUSSCHLIESSLICH als JSON-Array ohne Backticks:
+[{"question":"Frage","options":["A","B","C","D"],"correct":0,"explanation":"Warum ist das die richtige Antwort"}]
 Kapitel: "${ch.title}"
 Text: ${text}`,
   };
 
-  const btn=document.getElementById('genBtn');
-  btn.disabled=true;btn.textContent='…';
-  document.getElementById('outputArea').innerHTML=`<div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">Claude denkt nach…</div></div>`;
+  const area=document.getElementById('phaseArea');
+  area.innerHTML=`<div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">Claude generiert…</div></div>`;
 
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,messages:[{role:'user',content:prompts[currentTool]}]})
-    });
-    if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||'HTTP '+resp.status);}
-    const data=await resp.json();
-    const content=data.content[0].text;
-    const count=(currentTool==='quiz'||currentTool==='flashcards')?countSetting[currentTool]:null;
-    const entry={type:currentTool,raw:content,savedAt:new Date().toLocaleDateString('de-DE'),count};
-    if(['flashcards','quiz','terms','timeline'].includes(currentTool)){
+    const content=await callAPI(key,prompts[phaseId]);
+    const entry={type:phaseId,raw:content,savedAt:new Date().toLocaleDateString('de-DE')};
+    if(['preQuiz','flashcards','quiz'].includes(phaseId)){
       try{entry.parsed=JSON.parse(extractJson(content));}catch(e){entry.parsed=null;}
     }
-    pendingEntry=entry;
-    renderGeneratedContent(entry);
+    const sk=(['quiz','flashcards'].includes(phaseId))
+      ?activeBookId+'_'+activeChapIdx+'_'+phaseId+'_'+Date.now()
+      :activeBookId+'_'+activeChapIdx+'_'+phaseId;
+    saved[sk]=entry;
+    saveState();
+    updateProgress();
+    renderSavedPhase(phaseId,entry);
   }catch(e){
-    document.getElementById('outputArea').innerHTML=`<div class="err-box">${esc(e.message)}</div>`;
+    area.innerHTML=`<div class="err-box">${esc(e.message)}</div>`;
   }
-  btn.disabled=false;btn.textContent='✦ Neu generieren';
 }
 
-// ─── Render output ────────────────────────────────────
-function renderGeneratedContent(entry){
-  const out=document.getElementById('outputArea');
-  const t=TOOLS.find(x=>x.id===entry.type);
-  const alreadySaved=(entry.type==='quiz'||entry.type==='flashcards')
-    ?Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+activeChapIdx+'_'+entry.type+'_'))
-    :!!saved[savedKey(entry.type)];
-  const saveBtn=`<div class="btn-row" style="margin-top:14px">
-    <button class="btn-acc" id="saveBtn" onclick="saveCurrentEntry()">${alreadySaved&&!(entry.type==='quiz'||entry.type==='flashcards')?'✦ Ersetzen & speichern':'✦ Speichern'}</button>
-  </div>`;
-  const header=`<div class="out-header"><div class="out-title"><svg viewBox="0 0 24 24" fill="none" style="stroke-linecap:round;stroke-linejoin:round">${t.icon}</svg>${t.name}</div></div>`;
-  out.innerHTML='<div class="card" id="_entryCard"></div>';
-  renderEntryInto(document.getElementById('_entryCard'),entry,header,saveBtn);
-}
-
-function saveCurrentEntry(){
-  if(!pendingEntry)return;
-  const sk=newSavedKey(currentTool);
-  saved[sk]=pendingEntry;
-  pendingEntry=null;
-  saveState();
-  const btn=document.getElementById('saveBtn');
-  if(btn){btn.textContent='✓ Gespeichert';btn.disabled=true;btn.style.opacity='0.6';}
-  // update dot
-  const selCard=document.querySelector('.tool-card.sel');
-  if(selCard&&!selCard.querySelector('.tool-saved-dot')){
-    const d=document.createElement('div');d.className='tool-saved-dot';selCard.prepend(d);
-  }
-  // refresh progress bar in chap card
-  const pct=chapProgress(activeBookId,activeChapIdx);
+function updateProgress(){
+  const pct=chapPct(activeBookId,activeChapIdx);
   const fill=document.querySelector('.prog-bar-fill');if(fill)fill.style.width=pct+'%';
-  const pctTxt=document.querySelector('.card-sm [style*="gelernt"]');if(pctTxt)pctTxt.textContent=pct+'% dieses Kapitels gelernt';
+  const ptxt=document.querySelector('.card-sm [style*="abgeschlossen"]');if(ptxt)ptxt.textContent=pct+'% abgeschlossen';
+  // update path steps
+  PHASES.forEach((p,i)=>{
+    const step=document.querySelectorAll('.path-step')[i];if(!step)return;
+    const done=!!saved[activeBookId+'_'+activeChapIdx+'_'+p.id]||
+      Object.keys(saved).some(k=>k.startsWith(activeBookId+'_'+activeChapIdx+'_'+p.id+'_'));
+    step.classList.toggle('done',done);step.classList.toggle('active',i===currentPhase&&!done);
+    let chk=step.querySelector('.path-check');
+    if(done&&!chk){chk=document.createElement('span');chk.className='path-check';chk.textContent='✓';step.prepend(chk);}
+    else if(!done&&chk)chk.remove();
+  });
 }
 
-function renderEntryInto(out, entry, header, extra){
-  if(entry.type==='summary'||entry.type==='questions'||entry.type==='simple'){
-    out.innerHTML=`${header}<div class="prose">${esc(entry.raw)}</div>${extra}`;return;
-  }
-  if(entry.type==='flashcards'){
-    if(!entry.parsed){out.innerHTML=`${header}<div class="prose">${esc(entry.raw)}</div>${extra}`;return;}
-    renderFlashcardsSR(out,entry.parsed,header,extra);return;
-  }
-  if(entry.type==='quiz'){
-    if(!entry.parsed){out.innerHTML=`${header}<div class="prose">${esc(entry.raw)}</div>${extra}`;return;}
-    renderQuizInteractive(out,entry.parsed,header,extra);return;
-  }
-  if(entry.type==='terms'){
-    if(!entry.parsed){out.innerHTML=`${header}<div class="prose">${esc(entry.raw)}</div>${extra}`;return;}
-    let html=`${header}`;
-    entry.parsed.forEach(t=>{html+=`<div class="term"><div class="term-name">${esc(t.term)}</div><div class="term-def">${esc(t.definition)}</div></div>`;});
-    out.innerHTML=html+extra;return;
-  }
-  if(entry.type==='timeline'){
-    if(!entry.parsed){out.innerHTML=`${header}<div class="prose">${esc(entry.raw)}</div>${extra}`;return;}
-    let html=`${header}`;
-    entry.parsed.forEach((ev,i)=>{
-      const isLast=i===entry.parsed.length-1;
-      html+=`<div class="tl-item">
-        <div class="tl-dot-col"><div class="tl-dot"></div>${isLast?'':'<div class="tl-line"></div>'}</div>
-        <div><div class="tl-date">${esc(ev.date)}</div><div class="tl-event">${esc(ev.event)}</div></div>
-      </div>`;
-    });
-    out.innerHTML=html+extra;return;
+// ─── Render saved phase content ───────────────────────
+function renderSavedPhase(phaseId,entry){
+  const area=document.getElementById('phaseArea');
+  if(phaseId==='preQuiz'||phaseId==='quiz'){
+    if(!entry.parsed){area.innerHTML=`<div class="card"><div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    const hasExplanations=entry.parsed[0]?.explanation;
+    renderQuizInteractive(area,entry.parsed,phaseId,hasExplanations);
+  }else if(phaseId==='summary'){
+    area.innerHTML=`<div class="card"><div class="out-header"><div class="out-title">📖 Zusammenfassung</div><span class="save-indicator">${entry.savedAt}</span></div><div class="prose">${esc(entry.raw)}</div></div>
+      <div class="btn-row"><button class="btn-acc" onclick="nextPhase()">Weiter zu Karteikarten →</button></div>`;
+  }else if(phaseId==='flashcards'){
+    if(!entry.parsed){area.innerHTML=`<div class="card"><div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    startFlashcardSR(area,entry.parsed);
+  }else if(phaseId==='explain'){
+    renderExplainFeedback(area,entry);
   }
 }
 
-// ─── Flashcards SR ────────────────────────────────────
-function renderFlashcardsSR(container, cards, header, extra){
-  fcCards=[...cards];fcIdx=0;fcAgain=[];fcDone=0;fcTotal=cards.length;
-  renderFcCard(container,header,extra);
+// ─── Flashcard SR with input ──────────────────────────
+function startFlashcardSR(container,cards){
+  fcCards=[...cards];fcIdx=0;fcAgain=[];
+  renderFcCard(container);
 }
-function renderFcCard(container,header,extra){
+
+function renderFcCard(container){
   if(fcIdx>=fcCards.length){
-    // round done
     if(fcAgain.length===0){
-      // all correct
-      container.innerHTML=`${header}
-        <div class="quiz-result">
-          <div class="quiz-score">🎉</div>
-          <div class="quiz-score-sub">Alle ${fcTotal} Karten gewusst!</div>
-        </div>${extra}`;
-      return;
+      container.innerHTML=`<div class="card" style="text-align:center;padding:30px">
+        <div style="font-size:40px;margin-bottom:10px">🎉</div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;color:var(--text);margin-bottom:6px">Alle ${fcCards.length} Karten gewusst!</div>
+        <div style="font-size:13px;color:var(--text3);margin-bottom:16px">Ausgezeichnet – du hast alle Karten richtig abgerufen.</div>
+        <button class="btn-acc" onclick="nextPhase()">Weiter zum Quiz →</button>
+      </div>`;return;
     }
-    // restart with wrong ones
     fcCards=[...fcAgain];fcIdx=0;fcAgain=[];
-    container.innerHTML=`${header}
-      <div style="text-align:center;padding:14px 0;font-size:13px;color:var(--text3)">Noch ${fcCards.length} Karte${fcCards.length>1?'n':''} zum Wiederholen</div>`;
-    setTimeout(()=>renderFcCard(container,header,extra),600);
-    return;
+    container.innerHTML=`<div class="card" style="text-align:center;padding:20px">
+      <div style="font-size:28px;margin-bottom:8px">🔄</div>
+      <div style="font-size:14px;color:var(--text2)">Noch <strong>${fcCards.length}</strong> Karte${fcCards.length>1?'n':''} wiederholen</div>
+    </div>`;
+    setTimeout(()=>renderFcCard(container),800);return;
   }
   const card=fcCards[fcIdx];
-  const known=fcTotal-fcAgain.length-(fcCards.length-fcIdx);
-  container.innerHTML=`${header}
-    <div class="fc-progress">${fcIdx+1} / ${fcCards.length} ${fcAgain.length>0?'· '+fcAgain.length+' zum Wiederholen':''}</div>
-    <div class="fc-sr" id="fcCard" onclick="revealFc()">
+  const cid='fc_'+Math.random().toString(36).slice(2,6);
+  container.innerHTML=`
+    <div class="fc-progress">Karte ${fcIdx+1} von ${fcCards.length}${fcAgain.length>0?' · '+fcAgain.length+' zum Wiederholen':''}</div>
+    <div class="fc-sr" id="${cid}">
       <div class="fc-front">${esc(card.front)}</div>
-      <div class="fc-back">${esc(card.back)}</div>
-      <div class="fc-hint">Tippen zum Aufdecken</div>
+      <textarea class="fc-input" id="fc-inp-${cid}" placeholder="Deine Antwort…" rows="2"></textarea>
+      <button class="fc-reveal-btn" onclick="revealFc('${cid}','${esc(card.back).replace(/'/g,'\\&#39;')}')">Antwort aufdecken</button>
+      <div class="fc-back" id="fc-back-${cid}">${esc(card.back)}</div>
     </div>
-    <div class="fc-sr-btns" id="fcBtns" style="display:none">
-      <button class="fc-btn-no" onclick="fcAnswer(false)">✗ Nicht gewusst</button>
-      <button class="fc-btn-yes" onclick="fcAnswer(true)">✓ Gewusst</button>
-    </div>${extra}`;
+    <div class="fc-sr-btns" id="fc-btns-${cid}" style="display:none">
+      <button style="padding:12px;font-size:13px;font-family:'Source Sans 3',sans-serif;border-radius:var(--rsm);cursor:pointer;font-weight:500;background:var(--red-bg);border:1px solid rgba(192,57,43,.3);color:var(--red)" onclick="fcAnswer(false,'${cid}')">✗ Nicht gewusst</button>
+      <button style="padding:12px;font-size:13px;font-family:'Source Sans 3',sans-serif;border-radius:var(--rsm);cursor:pointer;font-weight:500;background:var(--green-bg);border:1px solid rgba(59,109,17,.3);color:var(--green)" onclick="fcAnswer(true,'${cid}')">✓ Gewusst</button>
+    </div>`;
 }
-function revealFc(){
-  document.getElementById('fcCard').classList.add('revealed');
-  document.getElementById('fcBtns').style.display='grid';
+
+function revealFc(cid,back){
+  document.getElementById('fc-back-'+cid).style.display='block';
+  document.getElementById('fc-btns-'+cid).style.display='grid';
+  document.querySelector('.fc-reveal-btn')?.remove();
 }
-function fcAnswer(knew){
+
+function fcAnswer(knew,cid){
   if(!knew)fcAgain.push(fcCards[fcIdx]);
   fcIdx++;
-  // find container
-  const el=document.getElementById('fcCard');
-  if(!el)return;
-  const container=el.closest('.card')||el.closest('.saved-entry-body');
-  // re-read header and extra from container - just re-render
-  const header=container.querySelector('.out-header')?container.querySelector('.out-header').outerHTML:'';
-  const extra=container.querySelector('.btn-row')?container.querySelector('.btn-row').outerHTML:'';
-  renderFcCard(container,header,extra);
+  const el=document.getElementById(cid);
+  const container=el?.closest('#phaseArea')||el?.closest('.saved-entry-body');
+  if(container)renderFcCard(container);
 }
 
 // ─── Quiz interactive ─────────────────────────────────
-function renderQuizInteractive(container, questions, header, extra){
+function renderQuizInteractive(container,questions,phaseId,hasExplanations){
   const qid='q'+Math.random().toString(36).slice(2,7);
-  window[qid]={qs:questions,idx:0,wrong:[],score:0};
+  window[qid]={qs:questions,idx:0,wrong:[],score:0,phase:phaseId};
   window[qid+'_render']=function(){
     const st=window[qid];
-    if(st.idx>=st.qs.length){
-      renderQuizResult(container,st,qid,header,extra);return;
-    }
+    if(st.idx>=st.qs.length){renderQuizResult(container,st,qid);return;}
     const q=st.qs[st.idx];
     const opts=q.options.map((o,i)=>`<button class="quiz-opt" onclick="${qid}_ans(${i})" id="${qid}o${i}">${esc(o)}</button>`).join('');
-    container.innerHTML=`${header}
-      <div class="quiz-prog">Frage ${st.idx+1} von ${st.qs.length}</div>
-      <div class="quiz-q">${esc(q.question)}</div>${opts}`;
+    container.innerHTML=`<div class="card">
+      <div class="quiz-prog">${st.phase==='preQuiz'?'Vorwissens-Quiz ':''}Frage ${st.idx+1} von ${st.qs.length}</div>
+      <div class="quiz-q">${esc(q.question)}</div>${opts}
+    </div>`;
   };
   window[qid+'_ans']=function(chosen){
     const st=window[qid];const q=st.qs[st.idx];
@@ -599,145 +737,118 @@ function renderQuizInteractive(container, questions, header, extra){
       else if(i===chosen)b.className='quiz-opt wrong';
     }
     if(chosen===q.correct)st.score++;else st.wrong.push(st.idx);
+    const card=container.querySelector('.card');
+    if(q.explanation){
+      const exp=document.createElement('div');
+      exp.style.cssText='margin-top:10px;padding:10px;background:rgba(217,119,6,.07);border-radius:var(--rsm);font-size:13px;color:var(--text2);line-height:1.5;border-left:3px solid var(--accent)';
+      exp.textContent=q.explanation;card.appendChild(exp);
+    }
     const nav=document.createElement('div');nav.className='quiz-nav';
     if(st.idx<st.qs.length-1)nav.innerHTML=`<button onclick="${qid}_idx_inc()">Nächste →</button>`;
     else nav.innerHTML=`<button onclick="${qid}_idx_inc()">Auswertung →</button>`;
-    container.querySelector('.quiz-q').after(nav);
+    card.appendChild(nav);
   };
   window[qid+'_idx_inc']=function(){window[qid].idx++;window[qid+'_render']();};
   window[qid+'_render']();
 }
 
-function renderQuizResult(container,st,qid,header,extra){
+function renderQuizResult(container,st,qid){
   const pct=Math.round((st.score/st.qs.length)*100);
-  const color=pct>=80?'var(--accent)':pct>=50?'#fbbf24':'#f87171';
+  const color=pct>=80?'var(--green)':pct>=50?'var(--accent)':'var(--red)';
+  const wrongQs=st.wrong.map(i=>st.qs[i]);
   let wrongHtml='';
-  if(st.wrong.length>0){
-    wrongHtml='<div style="margin-top:16px"><div class="sec-title" style="margin-bottom:8px">Falsch beantwortet</div>';
-    st.wrong.forEach(i=>{
-      const q=st.qs[i];
-      wrongHtml+=`<div style="margin-bottom:10px;padding:10px;background:var(--bg3);border-radius:var(--rsm);border-left:3px solid #f87171">
-        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px">${esc(q.question)}</div>
-        <div style="font-size:12px;color:var(--accent)">✓ ${esc(q.options[q.correct])}</div>
+  if(wrongQs.length>0){
+    wrongHtml='<div style="margin-bottom:14px"><div class="sec-title" style="margin-bottom:8px">Falsch beantwortet</div>';
+    wrongQs.forEach(q=>{
+      wrongHtml+=`<div style="margin-bottom:8px;padding:10px;background:var(--bg3);border-radius:var(--rsm);border-left:3px solid var(--red)">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px">${esc(q.question)}</div>
+        <div style="font-size:12px;color:var(--green)">✓ ${esc(q.options[q.correct])}</div>
+        ${q.explanation?`<div style="font-size:12px;color:var(--text3);margin-top:4px">${esc(q.explanation)}</div>`:''}
       </div>`;
     });
     wrongHtml+='</div>';
   }
-  container.innerHTML=`${header}
+  const isPreQuiz=st.phase==='preQuiz';
+  container.innerHTML=`<div class="card">
     <div class="quiz-result">
       <div class="quiz-score" style="color:${color}">${pct}%</div>
-      <div class="quiz-score-sub">${st.score} von ${st.qs.length} richtig</div>
-    </div>
-    ${wrongHtml}
-    <div class="btn-row">
-      <button class="btn-sec" onclick="window['${qid}']={qs:window['${qid}'].qs,idx:0,wrong:[],score:0};window['${qid}_render']()">Nochmal</button>
-      ${st.wrong.length>0?`<button class="btn-red" onclick="window['${qid}']={qs:window['${qid}'].wrong.map(i=>window['${qid}'].qs[i]),idx:0,wrong:[],score:0};window['${qid}_render']()">Nur Falsche</button>`:''}
-    </div>
-    ${extra}`;
-  // fix "Nur Falsche" – needs to capture wrong indices before reset
-  // re-implement with captured array
-  const wrongQs=st.wrong.map(i=>st.qs[i]);
-  container.innerHTML=`${header}
-    <div class="quiz-result">
-      <div class="quiz-score" style="color:${color}">${pct}%</div>
-      <div class="quiz-score-sub">${st.score} von ${st.qs.length} richtig</div>
+      <div class="quiz-score-sub">${st.score} von ${st.qs.length} richtig${isPreQuiz?' – kein Stress, das war der Ausgangspunkt!':''}</div>
     </div>
     ${wrongHtml}
     <div class="btn-row">
       <button class="btn-sec" id="${qid}retry">↺ Nochmal</button>
       ${wrongQs.length>0?`<button class="btn-red" id="${qid}wrong">Nur Falsche (${wrongQs.length})</button>`:''}
     </div>
-    ${extra}`;
-  const retryBtn=document.getElementById(qid+'retry');
-  if(retryBtn)retryBtn.onclick=()=>{window[qid]={qs:st.qs,idx:0,wrong:[],score:0};window[qid+'_render']();};
-  const wrongBtn=document.getElementById(qid+'wrong');
-  if(wrongBtn)wrongBtn.onclick=()=>{window[qid]={qs:wrongQs,idx:0,wrong:[],score:0};window[qid+'_render']();};
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn-acc" onclick="nextPhase()" style="flex:1">${isPreQuiz?'Weiter zur Zusammenfassung →':'Weiter →'}</button>
+    </div>
+  </div>`;
+  document.getElementById(qid+'retry').onclick=()=>{window[qid]={qs:st.qs,idx:0,wrong:[],score:0,phase:st.phase};window[qid+'_render']();};
+  const wb=document.getElementById(qid+'wrong');
+  if(wb)wb.onclick=()=>{window[qid]={qs:wrongQs,idx:0,wrong:[],score:0,phase:st.phase};window[qid+'_render']();};
 }
 
 // ─── Saved view ───────────────────────────────────────
 function renderSaved(){
   const s=document.getElementById('screen');
   const allKeys=Object.keys(saved);
-
   if(savedViewBook===null){
-    const booksWithSaved=books.filter(b=>allKeys.some(k=>k.startsWith(b.id+'_')));
-    if(booksWithSaved.length===0){
-      s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div>`+
-        emptyState('Noch nichts gespeichert','Generiere Inhalte unter „Lernen" und tippe auf Speichern.');return;
-    }
+    const bws=books.filter(b=>allKeys.some(k=>k.startsWith(b.id+'_')));
+    if(bws.length===0){s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div>`+emptyState('Noch nichts gespeichert','Starte einen Lernpfad unter „Lernen".');return;}
     let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="sec-title">Buch wählen</div>`;
-    booksWithSaved.forEach(b=>{
-      const [c1,c2]=b.color;const count=allKeys.filter(k=>k.startsWith(b.id+'_')).length;
+    bws.forEach(b=>{
+      const cnt=allKeys.filter(k=>k.startsWith(b.id+'_')).length;
       html+=`<div class="book-row" onclick="savedViewBook='${b.id}';savedViewChap=null;renderSaved()">
-        <div class="book-spine" style="background:linear-gradient(135deg,${c1},${c2})">
+        <div class="book-spine" style="background:linear-gradient(135deg,${b.color[0]},${b.color[1]})">
           <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         </div>
-        <div class="book-row-info">
-          <div class="book-row-title">${esc(b.title)}</div>
-          <div class="book-row-meta">${count} gespeicherte Inhalte</div>
-        </div>
-        <span style="font-size:18px;color:var(--text3);padding:0 4px">›</span>
+        <div class="book-row-info"><div class="book-row-title">${esc(b.title)}</div><div class="book-row-meta">${cnt} gespeicherte Inhalte</div></div>
+        <span style="font-size:18px;color:var(--text3)">›</span>
       </div>`;
     });
     s.innerHTML=html;return;
   }
-
   const book=books.find(b=>b.id===savedViewBook);
   if(!book){savedViewBook=null;renderSaved();return;}
-
-  // Helper: extract chapIdx from key (strip bookId prefix, then parse next segment)
-  const prefix=book.id+'_';
-  const getChapIdx=k=>parseInt(k.slice(prefix.length).split('_')[0]);
-
+  const pfx=book.id+'_';
+  const getCI=k=>parseInt(k.slice(pfx.length).split('_')[0]);
   if(savedViewChap===null){
-    const chapKeys=allKeys.filter(k=>k.startsWith(prefix));
-    const chapIdxs=[...new Set(chapKeys.map(k=>getChapIdx(k)).filter(n=>!isNaN(n)))].sort((a,b)=>a-b);
+    const ck=allKeys.filter(k=>k.startsWith(pfx));
+    const cis=[...new Set(ck.map(k=>getCI(k)).filter(n=>!isNaN(n)))].sort((a,b)=>a-b);
     let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div><button class="hdr-btn" onclick="savedViewBook=null;renderSaved()">← Zurück</button></div>
-      <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:2px">Gespeicherte Inhalte</div>
-        <div style="font-size:14px;font-weight:500">${esc(book.title)}</div>
-      </div>
+      <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px"><div style="font-size:11px;color:var(--text3)">Gespeicherte Inhalte</div><div style="font-size:14px;font-weight:500">${esc(book.title)}</div></div>
       <div class="sec-title">Kapitel wählen</div>`;
-    chapIdxs.forEach(ci=>{
-      const ch=book.chapters[ci];const count=chapKeys.filter(k=>getChapIdx(k)===ci).length;
+    cis.forEach(ci=>{
+      const ch=book.chapters[ci];const cnt=ck.filter(k=>getCI(k)===ci).length;
       html+=`<div class="chap-item" onclick="savedViewChap=${ci};renderSaved()">
-        <span class="chap-num">${ci+1}</span>
-        <span class="chap-title">${esc(ch?.title||'Kapitel '+(ci+1))}</span>
-        <span class="chap-saved">${count} Inhalt${count>1?'e':''}</span>
+        <span class="chap-num">${ci+1}</span><span class="chap-title">${esc(ch?.title||'Kapitel '+(ci+1))}</span>
+        <span class="chap-prog">${cnt} Inhalt${cnt>1?'e':''}</span>
       </div>`;
     });
     s.innerHTML=html;return;
   }
-
   const ci=savedViewChap;const ch=book.chapters[ci];
-  // Use entry.type (stored on object) instead of parsing from key
-  const entries=allKeys.filter(k=>k.startsWith(prefix+ci+'_'))
-    .map(k=>({k,tool:saved[k]?.type||'',entry:saved[k]}))
-    .filter(e=>e.tool)
-    .sort((a,b)=>a.tool.localeCompare(b.tool));
-
+  const entries=allKeys.filter(k=>k.startsWith(pfx+ci+'_'))
+    .map(k=>({k,tool:saved[k]?.type||'',entry:saved[k]})).filter(e=>e.tool)
+    .sort((a,b)=>PHASES.findIndex(p=>p.id===a.tool)-PHASES.findIndex(p=>p.id===b.tool));
+  const fcEntries=entries.filter(e=>e.tool==='flashcards'&&e.entry?.parsed);
   let html=`<div class="app-header"><div class="logo">Learn<span>Book</span></div><button class="hdr-btn" onclick="savedViewChap=null;renderSaved()">← Zurück</button></div>
     <div class="card-sm" style="border-left:3px solid ${book.color[0]};margin-bottom:14px">
-      <div style="font-size:11px;color:var(--text3);margin-bottom:2px">${esc(book.title)} · Kapitel ${ci+1}</div>
+      <div style="font-size:11px;color:var(--text3)">${esc(book.title)} · Kapitel ${ci+1}</div>
       <div style="font-size:14px;font-weight:500">${esc(ch?.title||'')}</div>
     </div>`;
-
-  // Export button for flashcards
-  const fcEntries=entries.filter(e=>e.tool==='flashcards'&&e.entry.parsed);
-  if(fcEntries.length>0){
-    html+=`<button class="btn-sec" style="width:100%;margin-bottom:12px" onclick="exportQuizlet(${ci})">⬇ Als Quizlet-CSV exportieren</button>`;
-  }
-
+  if(fcEntries.length>0)html+=`<button class="btn-sec" style="width:100%;margin-bottom:12px" onclick="exportQuizlet(${ci})">⬇ Als Quizlet-CSV exportieren</button>`;
+  const phaseLabels={preQuiz:'🔍 Vorwissens-Quiz',summary:'📖 Zusammenfassung',flashcards:'🃏 Karteikarten',quiz:'❓ Quiz',explain:'✍️ Erklärung + Feedback'};
   entries.forEach(({k,tool,entry})=>{
-    const t=TOOLS.find(x=>x.id===tool);if(!t)return;
-    const entryId='se_'+k.replace(/_/g,'X');
+    const label=phaseLabels[tool]||tool;
+    const eid='se_'+k.replace(/_/g,'X');
     html+=`<div class="saved-entry">
-      <div class="saved-entry-hdr" onclick="toggleSaved('${entryId}','${k}')">
-        <span class="saved-type-badge ${t.badge}">${t.name}${entry.count?' · '+entry.count:''}</span>
+      <div class="saved-entry-hdr" onclick="toggleSaved('${eid}','${k}')">
+        <span class="saved-type-badge badge-${tool}">${label}</span>
         <span class="saved-entry-title">${entry.savedAt}</span>
         <button class="saved-del" onclick="delSaved(event,'${k}')">✕</button>
       </div>
-      <div class="saved-entry-body" id="${entryId}"></div>
+      <div class="saved-entry-body" id="${eid}"></div>
     </div>`;
   });
   s.innerHTML=html;
@@ -748,27 +859,42 @@ function toggleSaved(id,key){
   const open=el.classList.toggle('open');
   if(open&&el.dataset.rendered!=='1'){
     const entry=saved[key];if(!entry)return;
-    renderEntryInto(el,entry,'','');
+    renderEntryInto(el,entry);
     el.dataset.rendered='1';
   }
 }
-function delSaved(e,k){
-  e.stopPropagation();delete saved[k];saveState();renderSaved();
+function renderEntryInto(container,entry){
+  if(entry.type==='summary'){container.innerHTML=`<div class="prose">${esc(entry.raw)}</div>`;return;}
+  if(entry.type==='preQuiz'||entry.type==='quiz'){
+    if(!entry.parsed){container.innerHTML=`<div class="prose">${esc(entry.raw)}</div>`;return;}
+    renderQuizInteractive(container,entry.parsed,entry.type,!!entry.parsed[0]?.explanation);return;
+  }
+  if(entry.type==='flashcards'){
+    if(!entry.parsed){container.innerHTML=`<div class="prose">${esc(entry.raw)}</div>`;return;}
+    startFlashcardSR(container,entry.parsed);return;
+  }
+  if(entry.type==='explain'){renderExplainFeedback(container,entry);return;}
+  if(entry.type==='terms'){
+    if(!entry.parsed){container.innerHTML=`<div class="prose">${esc(entry.raw)}</div>`;return;}
+    container.innerHTML=entry.parsed.map(t=>`<div class="term"><div class="term-name">${esc(t.term)}</div><div class="term-def">${esc(t.definition)}</div></div>`).join('');return;
+  }
+  if(entry.type==='timeline'){
+    if(!entry.parsed){container.innerHTML=`<div class="prose">${esc(entry.raw)}</div>`;return;}
+    container.innerHTML=entry.parsed.map((ev,i)=>`<div class="tl-item"><div class="tl-dot-col"><div class="tl-dot"></div>${i<entry.parsed.length-1?'<div class="tl-line"></div>':''}</div><div><div class="tl-date">${esc(ev.date)}</div><div class="tl-event">${esc(ev.event)}</div></div></div>`).join('');return;
+  }
+  container.innerHTML=`<div class="prose">${esc(entry.raw)}</div>`;
 }
+function delSaved(e,k){e.stopPropagation();delete saved[k];saveState();renderSaved();}
 
-// ─── Export Quizlet CSV ───────────────────────────────
-function exportQuizlet(chapIdx){
-  const allKeys=Object.keys(saved);
-  const fcKeys=allKeys.filter(k=>k.startsWith(savedViewBook+'_'+chapIdx+'_flashcards_'));
-  const allCards=[];
-  fcKeys.forEach(k=>{const e=saved[k];if(e&&e.parsed)e.parsed.forEach(c=>allCards.push(c));});
-  if(!allCards.length){alert('Keine Karteikarten gefunden.');return;}
-  const csv=allCards.map(c=>'"'+c.front.replace(/"/g,'""')+'"\t"'+c.back.replace(/"/g,'""')+'"').join('\n');
-  const blob=new Blob([csv],{type:'text/plain;charset=utf-8'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  const book=books.find(b=>b.id===savedViewBook);
-  const ch=book?.chapters[chapIdx];
-  a.download=(ch?.title||'kapitel').slice(0,30).replace(/[^a-z0-9]/gi,'_')+'_quizlet.txt';
+// ─── Export ───────────────────────────────────────────
+function exportQuizlet(ci){
+  const keys=Object.keys(saved).filter(k=>k.startsWith(savedViewBook+'_'+ci+'_flashcards'));
+  const cards=[];keys.forEach(k=>{const e=saved[k];if(e?.parsed)e.parsed.forEach(c=>cards.push(c));});
+  if(!cards.length){alert('Keine Karteikarten gefunden.');return;}
+  const csv=cards.map(c=>'"'+c.front.replace(/"/g,'""')+'"\t"'+c.back.replace(/"/g,'""')+'"').join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/plain;charset=utf-8'}));
+  const ch=books.find(b=>b.id===savedViewBook)?.chapters[ci];
+  a.download=(ch?.title||'karten').slice(0,30).replace(/[^a-z0-9]/gi,'_')+'_quizlet.txt';
   a.click();
 }
 
@@ -776,7 +902,6 @@ function exportQuizlet(chapIdx){
 function renderSettings(){
   const s=document.getElementById('screen');
   const key=localStorage.getItem('lb_apikey')||'';
-  const totalSaved=Object.keys(saved).length;
   s.innerHTML=`
     <div class="app-header"><div class="logo">Learn<span>Book</span></div></div>
     <div class="card">
@@ -788,8 +913,8 @@ function renderSettings(){
     </div>
     <div class="card">
       <div class="setting-label">Daten</div>
-      <div style="font-size:13px;color:var(--text2);margin-bottom:10px">${books.length} Bücher · ${totalSaved} gespeicherte Inhalte</div>
-      <button class="btn-sec" onclick="clearAllSaved()">Alle gespeicherten Inhalte löschen</button>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:10px">${books.length} Bücher · ${Object.keys(saved).length} gespeicherte Inhalte</div>
+      <button class="btn-sec" onclick="if(confirm('Alle gespeicherten Inhalte löschen?')){saved={};saveState();renderSettings()}">Alle gespeicherten Inhalte löschen</button>
     </div>
     ${isIOS()?`<div class="card"><div class="setting-label">Als App installieren</div><div style="font-size:13px;color:var(--text2);line-height:1.6">In Safari: <strong style="color:var(--text)">Teilen-Symbol</strong> → <strong style="color:var(--text)">„Zum Home-Bildschirm"</strong></div></div>`:''}`;
 }
@@ -799,13 +924,12 @@ function saveKey(){
   localStorage.setItem('lb_apikey',v);
   document.getElementById('keyStatus').textContent='✓ Key gespeichert';document.getElementById('keyStatus').className='key-ok';
 }
-function clearAllSaved(){if(!confirm('Alle gespeicherten Inhalte löschen?'))return;saved={};saveState();renderSettings();}
 
 // ─── ePub loading ─────────────────────────────────────
 async function loadEpubs(event){
   const files=Array.from(event.target.files);if(!files.length)return;
   const s=document.getElementById('screen');
-  s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">${files.length>1?files.length+' Bücher werden':'Buch wird'} geladen…</div></div>`;
+  s.innerHTML=`<div class="app-header"><div class="logo">Learn<span>Book</span></div></div><div class="loading-wrap"><div class="dots"><span></span><span></span><span></span></div><div class="loading-txt">${files.length>1?files.length+' Bücher':'Buch'} wird geladen…</div></div>`;
   for(const file of files){
     try{
       const zip=await JSZip.loadAsync(file);
@@ -813,16 +937,16 @@ async function loadEpubs(event){
       const opfText=await zip.file(opfPath).async('text');
       const parser=new DOMParser();
       const opfDoc=parser.parseFromString(opfText,'application/xml');
-      const titleEl=opfDoc.querySelector('metadata title,metadata > *|title');
-      const authorEl=opfDoc.querySelector('metadata creator,metadata > *|creator');
-      const title=titleEl?titleEl.textContent.trim():file.name.replace('.epub','');
-      const author=authorEl?authorEl.textContent.trim():'';
+      const te=opfDoc.querySelector('metadata title,metadata > *|title');
+      const ae=opfDoc.querySelector('metadata creator,metadata > *|creator');
+      const title=te?te.textContent.trim():file.name.replace('.epub','');
+      const author=ae?ae.textContent.trim():'';
       const opfDir=opfPath.includes('/')?opfPath.substring(0,opfPath.lastIndexOf('/')+1):'';
       const manifest={};
       opfDoc.querySelectorAll('manifest item').forEach(item=>{manifest[item.getAttribute('id')]={href:item.getAttribute('href'),type:item.getAttribute('media-type')};});
       const chapters=[];let idx=0;
-      for(const itemref of opfDoc.querySelectorAll('spine itemref')){
-        const item=manifest[itemref.getAttribute('idref')];
+      for(const ir of opfDoc.querySelectorAll('spine itemref')){
+        const item=manifest[ir.getAttribute('idref')];
         if(!item||!item.type?.includes('html'))continue;
         const path=opfDir+item.href;
         const entry=zip.file(path)||zip.file(decodeURIComponent(path));if(!entry)continue;
@@ -831,9 +955,9 @@ async function loadEpubs(event){
         const body=doc.body.textContent||'';
         const trimmed=body.replace(/\s+/g,' ').trim();if(trimmed.length<80)continue;
         const h=doc.querySelector('h1,h2,h3');
-        let chapTitle=h?h.textContent.trim():`Kapitel ${++idx}`;
-        if(chapTitle.length>70)chapTitle=chapTitle.slice(0,67)+'…';
-        chapters.push({title:chapTitle,text:trimmed,words:Math.round(trimmed.split(' ').length)});
+        let ct=h?h.textContent.trim():`Kapitel ${++idx}`;
+        if(ct.length>70)ct=ct.slice(0,67)+'…';
+        chapters.push({title:ct,text:trimmed,words:Math.round(trimmed.split(' ').length)});
       }
       if(!chapters.length)continue;
       const [c1,c2]=COLORS[colorIdx%COLORS.length];colorIdx++;
@@ -850,7 +974,24 @@ async function findOpf(zip){
   return Object.keys(zip.files).find(f=>f.endsWith('.opf'))||null;
 }
 
+// ─── API helper ───────────────────────────────────────
+async function callAPI(key,prompt){
+  const resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2500,messages:[{role:'user',content:prompt}]})
+  });
+  if(!resp.ok){const e=await resp.json();throw new Error(e.error?.message||'HTTP '+resp.status);}
+  const data=await resp.json();
+  return data.content[0].text;
+}
+
 // ─── Helpers ──────────────────────────────────────────
+function changeCount(type,d){
+  const min=type==='quiz'?3:4,max=type==='quiz'?20:30;
+  countSetting[type]=Math.min(max,Math.max(min,countSetting[type]+d));
+  const el=document.getElementById(type==='quiz'?'qCount':'fcCount');if(el)el.textContent=countSetting[type];
+}
 function extractJson(text){
   const m=text.match(/```json\s*([\s\S]*?)```/)||text.match(/```\s*([\s\S]*?)```/)||text.match(/(\[[\s\S]*\])/);
   return m?m[1].trim():text.trim();
