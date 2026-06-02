@@ -613,7 +613,11 @@ Text: ${text}`,
     const content=await callAPI(key,prompts[phaseId]);
     const entry={type:phaseId,raw:content,savedAt:new Date().toLocaleDateString('de-DE')};
     if(['preQuiz','flashcards','quiz'].includes(phaseId)){
-      try{entry.parsed=JSON.parse(extractJson(content));}catch(e){entry.parsed=null;}
+      try{
+        let p=JSON.parse(extractJson(content));
+        if(!Array.isArray(p))p=p.questions||p.cards||p.flashcards||p.items||Object.values(p)[0];
+        entry.parsed=Array.isArray(p)?p:null;
+      }catch(e){entry.parsed=null;}
     }
     const sk=(['quiz','flashcards'].includes(phaseId))
       ?activeBookId+'_'+activeChapIdx+'_'+phaseId+'_'+Date.now()
@@ -993,8 +997,15 @@ function changeCount(type,d){
   const el=document.getElementById(type==='quiz'?'qCount':'fcCount');if(el)el.textContent=countSetting[type];
 }
 function extractJson(text){
-  const m=text.match(/```json\s*([\s\S]*?)```/)||text.match(/```\s*([\s\S]*?)```/)||text.match(/(\[[\s\S]*\])/);
-  return m?m[1].trim():text.trim();
+  text=text.trim();
+  // Strip markdown code fences
+  const fence=text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if(fence)text=fence[1].trim();
+  // Find the outermost [ ] or { } – whichever comes first
+  const ai=text.indexOf('['),oi=text.indexOf('{');
+  if(ai!==-1&&(oi===-1||ai<oi)){const e=text.lastIndexOf(']');if(e>ai)return text.slice(ai,e+1);}
+  if(oi!==-1){const e=text.lastIndexOf('}');if(e>oi)return text.slice(oi,e+1);}
+  return text;
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent);}
