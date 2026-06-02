@@ -665,18 +665,33 @@ function updateProgress(){
 function renderSavedPhase(phaseId,entry){
   const area=document.getElementById('phaseArea');
   if(phaseId==='preQuiz'||phaseId==='quiz'){
-    if(!entry.parsed){area.innerHTML=`<div class="card"><div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    if(!entry.parsed||!entry.parsed.length){area.innerHTML=parseFailHtml(phaseId);return;}
     const hasExplanations=entry.parsed[0]?.explanation;
     renderQuizInteractive(area,entry.parsed,phaseId,hasExplanations);
   }else if(phaseId==='summary'){
     area.innerHTML=`<div class="card"><div class="out-header"><div class="out-title">📖 Zusammenfassung</div><span class="save-indicator">${entry.savedAt}</span></div><div class="prose">${esc(entry.raw)}</div></div>
       <div class="btn-row"><button class="btn-acc" onclick="nextPhase()">Weiter zu Karteikarten →</button></div>`;
   }else if(phaseId==='flashcards'){
-    if(!entry.parsed){area.innerHTML=`<div class="card"><div class="prose">${esc(entry.raw)}</div></div>`;return;}
+    if(!entry.parsed||!entry.parsed.length){area.innerHTML=parseFailHtml(phaseId);return;}
     startFlashcardSR(area,entry.parsed);
   }else if(phaseId==='explain'){
     renderExplainFeedback(area,entry);
   }
+}
+
+// Fallback-Anzeige, wenn die KI-Antwort nicht als JSON verwertbar war
+function parseFailHtml(phaseId){
+  return `<div class="card" style="text-align:center">
+    <div style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px">Die Antwort konnte nicht verarbeitet werden – das passiert manchmal, wenn die Generierung unterbrochen wurde.</div>
+    <button class="btn-primary" onclick="regeneratePhase('${phaseId}')">Nochmal generieren</button>
+  </div>`;
+}
+// Verwirft das fehlerhafte gespeicherte Ergebnis und generiert neu
+function regeneratePhase(phaseId){
+  const base=activeBookId+'_'+activeChapIdx+'_'+phaseId;
+  Object.keys(saved).forEach(k=>{if(k===base||k.startsWith(base+'_'))delete saved[k];});
+  saveState();
+  generatePhase(phaseId);
 }
 
 // ─── Flashcard SR with input ──────────────────────────
@@ -1061,7 +1076,7 @@ async function callAPI(key,prompt){
         resp=await fetch('https://api.anthropic.com/v1/messages',{
           method:'POST',
           headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-          body:JSON.stringify({model,max_tokens:2500,messages:[{role:'user',content:prompt}]})
+          body:JSON.stringify({model,max_tokens:4096,messages:[{role:'user',content:prompt}]})
         });
       }catch(netErr){
         lastErr=new Error('Netzwerkfehler: '+netErr.message);
@@ -1107,14 +1122,57 @@ function changeCount(type,d){
 }
 function extractJson(text){
   text=text.trim();
-  // Strip markdown code fences
+  // Markdown-Code-Fences entfernen (auch ohne schließende Fence)
   const fence=text.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if(fence)text=fence[1].trim();
-  // Find the outermost [ ] or { } – whichever comes first
+  if(fence){text=fence[1].trim();}
+  else{text=text.replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'').trim();}
+  // Äußerste [ ] oder { } finden – je nachdem, was zuerst kommt
   const ai=text.indexOf('['),oi=text.indexOf('{');
-  if(ai!==-1&&(oi===-1||ai<oi)){const e=text.lastIndexOf(']');if(e>ai)return text.slice(ai,e+1);}
-  if(oi!==-1){const e=text.lastIndexOf('}');if(e>oi)return text.slice(oi,e+1);}
-  return text;
+  let start=-1,open='',close='';
+  if(ai!==-1&&(oi===-1||ai<oi)){start=ai;open='[';close=']';}
+  else if(oi!==-1){start=oi;open='{';close='}';}
+  if(start===-1)return text;
+  let body=text.slice(start);
+  // Versuch 1: bis zur letzten passenden Klammer schneiden und parsen
+  const e=body.lastIndexOf(close);
+  if(e!==-1){
+    const trimmed=body.slice(0,e+1);
+    try{JSON.parse(trimmed);return trimmed;}catch(_){}
+  }
+  // Versuch 2: kompletten (evtl. abgeschnittenen) Rest reparieren
+  return repairJson(body)||body;
+}
+// Versucht, abgeschnittenes JSON zu retten, indem es bis zur letzten
+// vollständig balancierten Stelle abschneidet und offene Klammern schließt.
+function repairJson(s){
+  let depth=0,inStr=false,esc=false,lastComplete=-1,arr=s[0]==='[';
+  for(let i=0;i<s.length;i++){
+    const c=s[i];
+    if(inStr){
+      if(esc)esc=false;else if(c==='\\')esc=true;else if(c==='"')inStr=false;
+      continue;
+    }
+    if(c==='"'){inStr=true;continue;}
+    if(c==='{'||c==='[')depth++;
+    else if(c==='}'||c===']'){depth--;if(depth===1&&arr)lastComplete=i;if(depth===0)lastComplete=i;}
+  }
+  // Array: bis zum letzten vollständigen Element schneiden
+  if(arr&&lastComplete!==-1){
+    let out=s.slice(0,lastComplete+1).replace(/,\s*$/,'');
+    if(out[out.length-1]!==']')out+=']';
+    try{JSON.parse(out);return out;}catch(_){}
+  }
+  // Objekt (oder Array-Reparatur fehlgeschlagen): offene Strukturen schließen
+  let out=s,stack=[];inStr=false;esc=false;
+  for(let i=0;i<out.length;i++){
+    const c=out[i];
+    if(inStr){if(esc)esc=false;else if(c==='\\')esc=true;else if(c==='"')inStr=false;continue;}
+    if(c==='"')inStr=true;else if(c==='{'||c==='[')stack.push(c==='{'?'}':']');else if(c==='}'||c===']')stack.pop();
+  }
+  if(inStr)out+='"';
+  out=out.replace(/,\s*$/,'').replace(/:\s*$/,':null');
+  while(stack.length)out+=stack.pop();
+  try{JSON.parse(out);return out;}catch(_){return null;}
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent);}
