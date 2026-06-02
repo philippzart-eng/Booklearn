@@ -24,7 +24,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Source Sans 3',sans-serif;overscroll-behavior:none}
 body{display:flex;flex-direction:column}
-#screen{flex:1;overflow-y:auto;padding:calc(var(--st)+14px) 15px 0;padding-bottom:calc(76px + var(--sb))}
+#screen{flex:1;overflow-y:auto;padding:calc(max(var(--st),12px) + 16px) 15px 0;padding-bottom:calc(70px + var(--sb))}
 .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .logo{font-family:'Playfair Display',serif;font-size:21px;color:var(--accent)}.logo span{color:var(--text3);font-weight:400}
 .hdr-btn{background:none;border:none;color:var(--text3);font-size:13px;font-family:'Source Sans 3',sans-serif;cursor:pointer;padding:4px 8px}
@@ -45,6 +45,7 @@ body{display:flex;flex-direction:column}
 .book-row{display:flex;align-items:center;gap:12px;padding:12px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);margin-bottom:8px;cursor:pointer;transition:border-color .15s}
 .book-row:active{background:var(--bg3)}.book-row.active-book{border-color:var(--accent)}
 .book-spine{width:40px;height:52px;border-radius:3px 7px 7px 3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.book-cover{width:40px;height:56px;border-radius:3px 7px 7px 3px;object-fit:cover;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.18);background:var(--bg3)}
 .book-spine svg{width:20px;height:20px;stroke:#fff;stroke-width:2;fill:none}
 .book-row-info{flex:1;min-width:0}
 .book-row-title{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -231,13 +232,20 @@ let colorIdx=0;
 function S(k,v){if(v===undefined){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}else{localStorage.setItem(k,JSON.stringify(v))}}
 function loadState(){saved=S('lb_saved')||{};colorIdx=S('lb_colorIdx')||0;activeBookId=S('lb_activeBook')||null;}
 function saveState(){
-  const bm=books.map(b=>({...b,chapters:b.chapters.map(c=>({title:c.title,words:c.words}))}));
+  const bm=books.map(b=>({...b,cover:undefined,chapters:b.chapters.map(c=>({title:c.title,words:c.words}))}));
   S('lb_books_meta',bm);S('lb_activeBook',activeBookId);S('lb_saved',saved);S('lb_colorIdx',colorIdx);
-  books.forEach(b=>{try{S('lb_text_'+b.id,b.chapters.map(c=>c.text))}catch(e){}});
+  books.forEach(b=>{
+    try{S('lb_text_'+b.id,b.chapters.map(c=>c.text))}catch(e){}
+    try{if(b.cover)S('lb_cover_'+b.id,b.cover);}catch(e){}
+  });
 }
 function loadFullBooks(){
   const meta=S('lb_books_meta')||[];
-  books=meta.map(b=>{const t=S('lb_text_'+b.id)||[];return{...b,chapters:b.chapters.map((c,i)=>({...c,text:t[i]||''}))};});
+  books=meta.map(b=>{
+    const t=S('lb_text_'+b.id)||[];
+    const cover=S('lb_cover_'+b.id)||null;
+    return{...b,cover,chapters:b.chapters.map((c,i)=>({...c,text:t[i]||''}))};
+  });
   if(activeBookId&&!books.find(b=>b.id===activeBookId))activeBookId=books[0]?.id||null;
 }
 
@@ -277,9 +285,9 @@ function renderLibrary(){
   const booksHtml=books.map(b=>{
     const pct=bookPct(b.id);
     return `<div class="book-row ${b.id===activeBookId?'active-book':''}" onclick="selectBook('${b.id}')">
-      <div class="book-spine" style="background:linear-gradient(135deg,${b.color[0]},${b.color[1]})">
+      ${b.cover?`<img class="book-cover" src="${b.cover}" alt="">`:`<div class="book-spine" style="background:linear-gradient(135deg,${b.color[0]},${b.color[1]})">
         <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      </div>
+      </div>`}
       <div class="book-row-info">
         <div class="book-row-title">${esc(b.title)}</div>
         <div class="book-row-meta">${esc(b.author||'')} · ${b.chapters.length} Kapitel · ${pct}% gelernt</div>
@@ -318,6 +326,7 @@ function deleteBook(e,id){
   e.stopPropagation();if(!confirm('Buch und alle gespeicherten Inhalte entfernen?'))return;
   Object.keys(saved).forEach(k=>{if(k.startsWith(id+'_'))delete saved[k];});
   try{localStorage.removeItem('lb_text_'+id);}catch(e){}
+  try{localStorage.removeItem('lb_cover_'+id);}catch(e){}
   books=books.filter(b=>b.id!==id);
   if(activeBookId===id){activeBookId=books[0]?.id||null;activeChapIdx=null;}
   saveState();renderLibrary();
@@ -808,9 +817,9 @@ function renderSaved(){
     bws.forEach(b=>{
       const cnt=allKeys.filter(k=>k.startsWith(b.id+'_')).length;
       html+=`<div class="book-row" onclick="savedViewBook='${b.id}';savedViewChap=null;renderSaved()">
-        <div class="book-spine" style="background:linear-gradient(135deg,${b.color[0]},${b.color[1]})">
+        ${b.cover?`<img class="book-cover" src="${b.cover}" alt="">`:`<div class="book-spine" style="background:linear-gradient(135deg,${b.color[0]},${b.color[1]})">
           <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        </div>
+        </div>`}
         <div class="book-row-info"><div class="book-row-title">${esc(b.title)}</div><div class="book-row-meta">${cnt} gespeicherte Inhalte</div></div>
         <span style="font-size:18px;color:var(--text3)">›</span>
       </div>`;
@@ -969,13 +978,66 @@ async function loadEpubs(event){
         chapters.push({title:ct,text:trimmed,words:Math.round(trimmed.split(' ').length)});
       }
       if(!chapters.length)continue;
+      // Cover-Bild extrahieren (Base64), falls vorhanden
+      let cover=null;
+      try{cover=await extractCover(zip,opfDoc,manifest,opfDir);}catch(e){cover=null;}
       const [c1,c2]=COLORS[colorIdx%COLORS.length];colorIdx++;
       const id='book_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-      books.push({id,title,author,color:[c1,c2],chapters});
+      books.push({id,title,author,color:[c1,c2],chapters,cover});
       if(!activeBookId)activeBookId=id;
     }catch(e){console.error(e);}
   }
   saveState();event.target.value='';nav('library');
+}
+
+// Findet das Cover im ePub: 1) meta name="cover", 2) manifest properties="cover-image",
+// 3) Heuristik über Dateinamen. Gibt eine data:-URL zurück oder null.
+async function extractCover(zip,opfDoc,manifest,opfDir){
+  let href=null;
+  // 1) <meta name="cover" content="ID">
+  const metaCover=opfDoc.querySelector('metadata meta[name="cover"]');
+  if(metaCover){const cid=metaCover.getAttribute('content');if(cid&&manifest[cid])href=manifest[cid].href;}
+  // 2) manifest item mit properties="cover-image"
+  if(!href){
+    for(const item of opfDoc.querySelectorAll('manifest item')){
+      if((item.getAttribute('properties')||'').includes('cover-image')){href=item.getAttribute('href');break;}
+    }
+  }
+  // 3) Heuristik: Manifest-ID oder Dateiname enthält "cover" und ist ein Bild
+  if(!href){
+    for(const item of opfDoc.querySelectorAll('manifest item')){
+      const t=item.getAttribute('media-type')||'';const h=item.getAttribute('href')||'';const id=item.getAttribute('id')||'';
+      if(t.startsWith('image/')&&(/cover/i.test(id)||/cover/i.test(h))){href=h;break;}
+    }
+  }
+  if(!href)return null;
+  const path=opfDir+href;
+  const entry=zip.file(path)||zip.file(decodeURIComponent(path));
+  if(!entry)return null;
+  const b64=await entry.async('base64');
+  const ext=(href.split('.').pop()||'jpg').toLowerCase();
+  const mime=ext==='png'?'image/png':ext==='gif'?'image/gif':ext==='webp'?'image/webp':'image/jpeg';
+  const dataUrl=`data:${mime};base64,${b64}`;
+  // Auf Thumbnail verkleinern, damit localStorage nicht überläuft
+  try{return await shrinkImage(dataUrl,300);}catch(e){return dataUrl;}
+}
+
+// Verkleinert ein Bild proportional auf maxW Breite und gibt JPEG-data-URL zurück
+function shrinkImage(dataUrl,maxW){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const scale=Math.min(1,maxW/img.width);
+        const w=Math.round(img.width*scale),h=Math.round(img.height*scale);
+        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(cv.toDataURL('image/jpeg',0.8));
+      }catch(e){resolve(dataUrl);}
+    };
+    img.onerror=()=>reject(new Error('img load failed'));
+    img.src=dataUrl;
+  });
 }
 async function findOpf(zip){
   const c=zip.file('META-INF/container.xml');
