@@ -979,36 +979,57 @@ async function findOpf(zip){
 }
 
 // ─── API helper ───────────────────────────────────────
+// Modelle in Reihenfolge: bei anhaltender Überlastung (529) wird auf das
+// nächste Modell zurückgefallen. Reihenfolge = bevorzugt zuerst.
+const MODEL_FALLBACKS=['claude-sonnet-4-5','claude-haiku-4-5','claude-3-5-sonnet-latest'];
+
 async function callAPI(key,prompt){
-  const maxRetries=5;
+  const maxRetriesPerModel=3;
   let lastErr;
-  for(let attempt=0;attempt<=maxRetries;attempt++){
-    let resp;
-    try{
-      resp=await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-        body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:2500,messages:[{role:'user',content:prompt}]})
-      });
-    }catch(netErr){
-      lastErr=new Error('Netzwerkfehler: '+netErr.message);
-      if(attempt<maxRetries){await new Promise(r=>setTimeout(r,Math.min(1000*Math.pow(2,attempt),16000)));continue;}
-      throw lastErr;
+  for(let m=0;m<MODEL_FALLBACKS.length;m++){
+    const model=MODEL_FALLBACKS[m];
+    for(let attempt=0;attempt<=maxRetriesPerModel;attempt++){
+      let resp;
+      try{
+        resp=await fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+          body:JSON.stringify({model,max_tokens:2500,messages:[{role:'user',content:prompt}]})
+        });
+      }catch(netErr){
+        lastErr=new Error('Netzwerkfehler: '+netErr.message);
+        if(attempt<maxRetriesPerModel){await new Promise(r=>setTimeout(r,Math.min(1000*Math.pow(2,attempt),16000)));continue;}
+        break; // nächstes Modell probieren
+      }
+      if(resp.ok){const data=await resp.json();return data.content[0].text;}
+
+      // 400/404 = Modell für dieses Konto ungültig -> sofort nächstes Modell
+      if(resp.status===400||resp.status===404){
+        let msg;try{const e=await resp.json();msg=e.error?.message;}catch(_){}
+        lastErr=new Error(msg||'Modell nicht verfügbar ('+model+')');
+        break;
+      }
+
+      // 429/529/5xx = transient -> Backoff (mit Jitter), dann erneut
+      if(resp.status===429||resp.status===529||resp.status>=500){
+        if(attempt<maxRetriesPerModel){
+          let wait=Math.min(1000*Math.pow(2,attempt),16000)+Math.random()*500;
+          const ra=resp.headers.get('retry-after');
+          if(ra&&!isNaN(parseFloat(ra)))wait=Math.max(wait,parseFloat(ra)*1000);
+          lastErr=new Error('Überlastet (HTTP '+resp.status+', '+model+')');
+          await new Promise(r=>setTimeout(r,wait));
+          continue;
+        }
+        lastErr=new Error('Überlastet (HTTP '+resp.status+')');
+        break; // dieses Modell überlastet -> Fallback-Modell versuchen
+      }
+
+      // sonstige Fehler (z.B. 401 Auth) -> nicht wiederholen, sofort melden
+      let msg;try{const e=await resp.json();msg=e.error?.message;}catch(_){}
+      throw new Error(msg||'HTTP '+resp.status);
     }
-    if(resp.ok){const data=await resp.json();return data.content[0].text;}
-    // 429 = rate limit, 529 = overloaded, 5xx = transient -> retry with backoff
-    if((resp.status===429||resp.status===529||resp.status>=500)&&attempt<maxRetries){
-      let wait=Math.min(1000*Math.pow(2,attempt),16000);
-      const ra=resp.headers.get('retry-after');
-      if(ra&&!isNaN(parseFloat(ra)))wait=Math.max(wait,parseFloat(ra)*1000);
-      lastErr=new Error('Server überlastet (HTTP '+resp.status+')');
-      await new Promise(r=>setTimeout(r,wait));
-      continue;
-    }
-    let msg;try{const e=await resp.json();msg=e.error?.message;}catch(_){}
-    throw new Error(msg||'HTTP '+resp.status);
   }
-  throw lastErr||new Error('Anfrage fehlgeschlagen');
+  throw lastErr||new Error('Alle Modelle überlastet – bitte in 1–2 Minuten erneut versuchen.');
 }
 
 // ─── Helpers ──────────────────────────────────────────
